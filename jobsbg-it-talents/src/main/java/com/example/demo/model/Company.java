@@ -1,5 +1,5 @@
 package com.example.demo.model;
 
-public class Company {
+public class Company extends Registration{
 
 }
