@@ -2,16 +2,29 @@ package com.example.demo.model;
 
 public class User extends Registration{
 	
+	private long id;
 	private String firstName;
 	private String lastName;
 	private boolean isAdmin;
 
 	public User(Long id, String email, String password, String phoneNumber,
-			String firstName, String lastName, boolean isAdmin) {
-		super(id, email, password, phoneNumber);
+			String firstName, String lastName, boolean isAdmin, boolean isDeleted) {
+		super(id, email, password, phoneNumber, isDeleted);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.isAdmin = isAdmin;
+		this.id = id;
+	}
+
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {

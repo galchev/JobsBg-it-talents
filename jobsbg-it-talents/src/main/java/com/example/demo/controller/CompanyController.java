@@ -6,27 +6,25 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dao.UserDAO;
-import com.example.demo.dto.UserDTO;
-import com.example.demo.model.Registration;
-import com.example.demo.model.User;
+import com.example.demo.dao.CompanyDAO;
+import com.example.demo.dto.CompanyDTO;
 
 @RestController
-public class UserController {
+public class CompanyController {
 
 	@Autowired
-	private UserDAO userDao;
+	private CompanyDAO companyDao;
 	
-	@GetMapping("/users")
-	public List<UserDTO> getAllUsers(){
+	
+	@GetMapping("/companies")
+	public List<CompanyDTO> getAllCompanies(){
 		try {
-			return userDao.getAllUsers();
+			return this.companyDao.getAllCompanies();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return new LinkedList<UserDTO>();
+			return new LinkedList<>();
 		}
 	}
 }

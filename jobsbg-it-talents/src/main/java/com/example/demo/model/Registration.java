@@ -9,11 +9,13 @@ public class Registration {
 	private String pictureUrl;
 	private boolean isDeleted;
 	
-	public Registration(Long id, String email, String password, String phoneNumber) {
+	public Registration(Long id, String email, String password, 
+			String phoneNumber, boolean isDeleted) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
+		this.isDeleted = isDeleted;
 	}
 
 	public Long getId() {
