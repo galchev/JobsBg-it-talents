@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.15, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: jobs-bg
+-- Host: localhost    Database: jobs-bg
 -- ------------------------------------------------------
 -- Server version	8.0.15
 
@@ -303,7 +303,7 @@ CREATE TABLE `registrations` (
   PRIMARY KEY (`registration_id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `password` (`password`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,7 +312,7 @@ CREATE TABLE `registrations` (
 
 LOCK TABLES `registrations` WRITE;
 /*!40000 ALTER TABLE `registrations` DISABLE KEYS */;
-INSERT INTO `registrations` VALUES (1,'niki@abv.bg','12345','0895050091',NULL,0),(2,'tedi@abv.bg','1234','0895020304',NULL,0),(3,'tea@gmail.com','qwerty','0885602435',NULL,1),(4,'billa@abv.bg','billa123','0878989897',NULL,0),(5,'microsoft@gmail.com','micro789','0886512345',NULL,1),(6,'chavo@abv.bg','messi10','0875263149',NULL,0);
+INSERT INTO `registrations` VALUES (1,'niki@abv.bg','12345','0895050091',NULL,0),(2,'tedi@abv.bg','1234','0895020304',NULL,0),(3,'tea@gmail.com','qwerty','0885602435',NULL,1),(4,'billa@abv.bg','billa123','0878989897',NULL,0),(5,'microsoft@gmail.com','micro789','0886512345',NULL,1),(6,'chavo@abv.bg','messi10','0875263149',NULL,0),(7,'mtel@abv.bg','1234','088',NULL,0);
 /*!40000 ALTER TABLE `registrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-04 17:38:55
+-- Dump completed on 2019-03-04 17:47:13
