@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.LoginDTO;
+import com.example.demo.dto.RegistrationDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
@@ -64,6 +66,31 @@ public class UserDAO {
 			else {
 				throw new NoSuchElementException("User not found");
 			}
+	}
+	
+	
+	public RegistrationDTO login(LoginDTO user) throws SQLException, NoSuchElementException {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		
+		ResultSet rs = con.createStatement().executeQuery("select * from registrations r\r\n" + 
+				"where email = '"+user.getEmail()+"' and password = '"+user.getPassword()+"';");
+		
+		RegistrationDTO userToReturn = null;
+		
+		while(rs.next()) {
+			userToReturn = new RegistrationDTO(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+		}
+		
+//		if(userToReturn == null) {
+//			throw new NoSuchElementException("No such user");
+//		}
+		
+		return userToReturn;
+	}
+	
+	
+	public UserProfileDTO getUserProfile(long id) throws SQLException, NoSuchElementException {
+		return this.getUserById(id);
 	}
 	
 	@Autowired
