@@ -8,11 +8,10 @@ public class User extends Registration{
 	private boolean isAdmin;
 
 	public User(Long id, String email, String password, String phoneNumber,
-			String firstName, String lastName, boolean isAdmin, boolean isDeleted) {
-		super(id, email, password, phoneNumber, isDeleted);
+			String firstName, String lastName, boolean isDeleted) {
+		super(id, email, password, phoneNumber, false);
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.isAdmin = isAdmin;
 		this.id = id;
 	}
 
