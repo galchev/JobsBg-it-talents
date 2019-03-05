@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dao.RegistrationDAO;
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidEmailOrPasswordException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.model.Registration;
@@ -37,7 +38,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping("/registrationsUser")
-	public long register(@RequestBody UserDTO user) {
+	public long register(@RequestBody UserProfileDTO user) {
 		
 		try {
 			return this.regDao.registerUser(user);

@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -44,16 +45,16 @@ public class UserDAO {
 	}
 	
 	
-	public UserDTO getUserById(long id) throws SQLException, NoSuchElementException {
+	public UserProfileDTO getUserById(long id) throws SQLException, NoSuchElementException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();		
 		ResultSet rs = con.createStatement()
 				.executeQuery(SELECT_USER_BY_ID_QUERY
 						+ "where u.use_reg_id = '"+id+"';");
-		UserDTO userToReturn = null;
+		UserProfileDTO userToReturn = null;
 		byte usersCount = 0;
 		while(rs.next()) {
 			usersCount++;
-		userToReturn = new UserDTO(rs.getLong(1), rs.getString(2),
+		userToReturn = new UserProfileDTO(rs.getLong(1), rs.getString(2),
 				rs.getString(3), rs.getString(4),rs.getString(5),
 				rs.getString(6), rs.getBoolean(7), rs.getBoolean(8));
 		}

@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.example.demo.dao.UserDAO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -35,7 +36,7 @@ public class UserController {
 		}
 	}
 	@GetMapping("/users/{userId}")
-	public UserDTO getUserDetails(@PathVariable long userId) throws SQLException, NoSuchElementException {
+	public UserProfileDTO getUserDetails(@PathVariable long userId) throws SQLException, NoSuchElementException {
 			return userDao.getUserById(userId);
 
 	}

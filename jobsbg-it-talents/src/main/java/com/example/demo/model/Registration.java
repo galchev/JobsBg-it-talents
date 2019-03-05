@@ -50,9 +50,9 @@ public class Registration {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getPictureUrl() {
-		return pictureUrl;
-	}
+//	public String getPictureUrl() {
+//		return pictureUrl;
+//	}
 
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;

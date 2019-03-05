@@ -6,10 +6,6 @@ public class UserDTO {
 	private String email;
 	private String password;
 	private String phoneNumber;
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
 	private String pictureUrl;
 	private boolean isDeleted;
 	private String firstName;
@@ -24,18 +20,7 @@ public class UserDTO {
 		this.password = password;
 	}
 
-	public UserDTO(long id, String firstName, String lastName, String email, String password, String phoneNumber,
-			boolean isAdmin, boolean isDeleted) {
-		
-		this.userId = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.phoneNumber = phoneNumber;
-		this.isAdmin = isAdmin;
-		this.isDeleted = isDeleted;
-	}
+
 
 	public String getLastName() {
 		return lastName;
@@ -53,27 +38,40 @@ public class UserDTO {
 		return userId;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+
+
+//	public String getPhoneNumber() {
+//		return phoneNumber;
+//	}
+
+
+
+//	public boolean isDeleted() {
+//		return isDeleted;
+//	}
+
+
+
+//	public boolean isAdmin() {
+//		return isAdmin;
+//	}
+
+
 
 	public String getPictureUrl() {
 		return pictureUrl;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
+
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-
-
 	
 
 	

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidEmailOrPasswordException;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
@@ -48,7 +49,7 @@ public class RegistrationDAO {
 	}
 	
 	
-	public long registerUser(UserDTO user) throws Exception {
+	public long registerUser(UserProfileDTO user) throws Exception {
 				
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);

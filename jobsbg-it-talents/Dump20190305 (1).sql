@@ -96,7 +96,7 @@ CREATE TABLE `companies` (
 
 LOCK TABLES `companies` WRITE;
 /*!40000 ALTER TABLE `companies` DISABLE KEYS */;
-INSERT INTO `companies` VALUES (4,'Billa','www.billa.bg',10152356),(5,'Microsoft','www.microsoft.com',54214568),(7,'Mtel','www.mtel.bg',12343531),(32,'Kaufland','www.kaufland.com',84516239);
+INSERT INTO `companies` VALUES (4,'Billa','www.billa.bg',10152356),(5,'Microsoft','www.microsoft.com',54214568),(7,'Mtel','www.mtel.bg',12343531),(32,'Kaufland','www.kaufland.com',84516239),(33,'Java','www.javaee.com',84515487),(36,'Ikea','www.ikea.com',84515400),(38,'Marlboro','www.marlboro.com',84533400);
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +303,7 @@ CREATE TABLE `registrations` (
   PRIMARY KEY (`registration_id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `password` (`password`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,7 +312,7 @@ CREATE TABLE `registrations` (
 
 LOCK TABLES `registrations` WRITE;
 /*!40000 ALTER TABLE `registrations` DISABLE KEYS */;
-INSERT INTO `registrations` VALUES (1,'niki@abv.bg','12345','0895050091',NULL,0),(2,'tedi@abv.bg','1234','0895020304',NULL,0),(3,'tea@gmail.com','qwerty','0885602435',NULL,1),(4,'billa@abv.bg','billa123','0878989897',NULL,0),(5,'microsoft@gmail.com','micro789','0886512345',NULL,1),(6,'chavo@abv.bg','messi10','0875263149',NULL,0),(7,'mtel@abv.bg','1234','088',NULL,0),(22,'asen@abv.bg','liverpool','0895050337','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUS_4aNNHwEtdML93zULdAt9zop-E6v18WwxIdW7SG5RJhY29e',0),(23,'mimi@gmail.com','mimi123','0895546879','https://pbs.twimg.com/profile_images/712703916358537217/mcOketun_400x400.jpg',0),(29,'mitko@abv.bg','1478963','0878989897','',0),(30,'venci@abv.bg','wenc1','0875293819','',0),(31,'gerka@abv.bg','gerrri','0897203069','',0),(32,'kaufland@abv.bg','kaufland555','0878642513','http://kurabiinica.bg/wp-content/uploads/2017/03/Kaufland.jpg',0);
+INSERT INTO `registrations` VALUES (1,'niki@abv.bg','12345','0895050091',NULL,0),(2,'tedi@abv.bg','1234','0895020304',NULL,0),(3,'tea@gmail.com','qwerty','0885602435',NULL,1),(4,'billa@abv.bg','billa123','0878989897',NULL,0),(5,'microsoft@gmail.com','micro789','0886512345',NULL,1),(6,'chavo@abv.bg','messi10','0875263149',NULL,0),(7,'mtel@abv.bg','1234','088',NULL,0),(22,'asen@abv.bg','liverpool','0895050337','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUS_4aNNHwEtdML93zULdAt9zop-E6v18WwxIdW7SG5RJhY29e',0),(23,'mimi@gmail.com','mimi123','0895546879','https://pbs.twimg.com/profile_images/712703916358537217/mcOketun_400x400.jpg',0),(29,'mitko@abv.bg','1478963','0878989897','',0),(30,'venci@abv.bg','wenc1','0875293819','',0),(31,'gerka@abv.bg','gerrri','0897203069','',0),(32,'kaufland@abv.bg','kaufland555','0878642513','http://kurabiinica.bg/wp-content/uploads/2017/03/Kaufland.jpg',0),(33,'java@abv.bg','javaee2','0878642575','',0),(34,'violina@abv.bg','bruno','0894502547','',0),(35,'georgi@abv.bg','gosho1','0875456554','',0),(36,'ikea@abv.bg','ikea97','0878654870','',0),(37,'pesho@abv.bg','pesho1','0875456550','',0),(38,'marlboro@abv.bg','marlboro','0878004870','',0);
 /*!40000 ALTER TABLE `registrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,7 +340,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Nikolay','Galchev',1),(2,'Teodora','Topuzova',0),(3,'Tea','Mea',0),(6,'Chavdar','Tonchev',1),(29,'Dimitur','Galchev',0),(30,'Vencislav','Vurbanov',0),(31,'Gergana','Aikova',0);
+INSERT INTO `users` VALUES (1,'Nikolay','Galchev',1),(2,'Teodora','Topuzova',0),(3,'Tea','Mea',0),(6,'Chavdar','Tonchev',1),(29,'Dimitur','Galchev',0),(30,'Vencislav','Vurbanov',0),(31,'Gergana','Aikova',0),(34,'Violina','Zasheva',0),(35,'Georgi','Georgiev',0),(37,'Petur','Ivanov',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-05 13:27:23
+-- Dump completed on 2019-03-05 15:19:59
