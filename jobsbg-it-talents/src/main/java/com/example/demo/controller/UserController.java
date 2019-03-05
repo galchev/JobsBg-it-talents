@@ -38,7 +38,6 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public UserProfileDTO getUserDetails(@PathVariable long userId) throws SQLException, NoSuchElementException {
 			return userDao.getUserById(userId);
-
 	}
 	
 	

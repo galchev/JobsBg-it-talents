@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-public class CompanyDTO {
+public class CompanyProfileDTO {
 
 	private Long companyId;
 	private String email;
@@ -31,7 +31,7 @@ public class CompanyDTO {
 		return isDeleted;
 	}
 	
-	public CompanyDTO(Long companyId, String name, String email, String website, int bulstat,
+	public CompanyProfileDTO(Long companyId, String name, String email, String website, int bulstat,
 			String passowrd, String phoneNumber, String pictureUrl) {
 		this.companyId = companyId;
 		this.name = name;
@@ -60,3 +60,4 @@ public class CompanyDTO {
 	}
 	
 }
+
