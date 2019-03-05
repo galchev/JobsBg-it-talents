@@ -14,6 +14,7 @@ import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.model.Country;
 
 @Component
 public class CompanyDAO {
@@ -41,6 +42,7 @@ public class CompanyDAO {
 	}
 	
 	public CompanyProfileDTO getCompanyById(long id) throws SQLException, NoSuchElementException {
+		
 		Connection con = jdbcTemplate.getDataSource().getConnection();		
 		ResultSet rs = con.createStatement()
 				.executeQuery(GET_ALL_COMPANIES
