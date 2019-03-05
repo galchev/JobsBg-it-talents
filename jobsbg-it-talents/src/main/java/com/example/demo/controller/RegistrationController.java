@@ -47,7 +47,6 @@ public class RegistrationController {
 			return -1;
 		}
 		
-		
 	}
 	
 	@PostMapping("/registrationsCompany")
