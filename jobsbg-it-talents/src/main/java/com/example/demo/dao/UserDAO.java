@@ -31,8 +31,7 @@ public class UserDAO {
 		while(rs.next()) {
 			users.add(new UserDTO(rs.getLong(1), rs.getString(2),
 					rs.getString(3), rs.getString(4), rs.getString(5)));
-		}		
-		
+		}
 		return users;
 	}
 	
@@ -41,9 +40,19 @@ public class UserDAO {
 		ResultSet rs = con.createStatement()
 				.executeQuery(SELECT_ALL_USERS_QUERRY
 						+ "where u.use_reg_id = '"+id+"';");
-		rs.next();
-		return new UserDTO(rs.getLong(1), rs.getString(2),
+		UserDTO userToReturn = null;
+		byte usersCount = 0;
+		while(rs.next()) {
+			usersCount++;
+		userToReturn = new UserDTO(rs.getLong(1), rs.getString(2),
 				rs.getString(3), rs.getString(4),rs.getString(5));
+		}
+		if(usersCount == 1) {
+			return userToReturn;
+		}
+//		else {
+//			throw new NoSuchUserException("No such user");
+//		}
 	}
 	
 	@Autowired
