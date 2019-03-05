@@ -3,14 +3,22 @@ package com.example.demo.dto;
 public class UserDTO {
 	
 	private Long userId;
-	private String fisrtName;
-	private String lastName;
 	private String email;
 	private String password;
+	private String phoneNumber;
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	private String pictureUrl;
+	private boolean isDeleted;
+	private String firstName;
+	private String lastName;
+	private boolean isAdmin;
 	
 	public UserDTO(Long userId, String fisrtName, String lastName, String email, String password) {
 		this.userId = userId;
-		this.fisrtName = fisrtName;
+		this.firstName = fisrtName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
@@ -32,9 +40,27 @@ public class UserDTO {
 		return userId;
 	}
 
-	public String getFisrtName() {
-		return fisrtName;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+
 	
 
 	

@@ -3,8 +3,31 @@ package com.example.demo.dto;
 public class CompanyDTO {
 
 	private Long companyId;
-	private String name;
 	private String email;
+	private String password;
+	private String phoneNumber;
+	private String pictureUrl;
+	private boolean isDeleted;
+	private String name;
+	public String getPassword() {
+		return password;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
 	private String website;
 	private int bulstat;
 	
