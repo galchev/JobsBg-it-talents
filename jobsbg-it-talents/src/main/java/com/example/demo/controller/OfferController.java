@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.OfferDAO;
@@ -20,21 +21,22 @@ public class OfferController {
 	private OfferDAO offerDao;
 	//za vremenno vytreshno polzvane
 	@GetMapping("/offers")
-	public List<OfferDTO> getAllUsers(){
+	public List<OfferDTO> getAllUsers(@RequestParam(name="sortBy",required = false) String sortBy,
+			@RequestParam(name="companyId", required = false) Long companyId){
 		try {
-			this.getOffersInList();
-			return offerDao.getAllOffers();
+		//	this.getOffersInList();
+			return offerDao.getAllOffers(sortBy,companyId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return new LinkedList<OfferDTO>();
 		}
 	}
 	//za vremenno vytreshno polzvane
-	public void getOffersInList() throws SQLException {
-		this.offerContainer.addAll(offerDao.getAllOffers());
-		System.out.println(this.offerContainer.size());
-	}
-	public List<OfferDTO> getOfferContainer() {
-		return offerContainer;
-	}
+//	public void getOffersInList() throws SQLException {
+//		this.offerContainer.addAll(offerDao.getAllOffers());
+//		System.out.println(this.offerContainer.size());
+//	}
+//	public List<OfferDTO> getOfferContainer() {
+//		return offerContainer;
+//	}
 }

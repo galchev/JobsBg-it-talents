@@ -66,7 +66,7 @@ public class OfferDTO {
 		return jobCategoryId;
 	}
 
-	public long getCompanyRegId() {
+	public Long getCompanyRegId() {
 		return companyRegId;
 	}
 }

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +21,7 @@ public class OfferDAO {
 	
 	
 	//get all offers
-	public List<OfferDTO> getAllOffers() throws SQLException{
+	public List<OfferDTO> getAllOffers(String sortBy, Long companyId) throws SQLException{
 		Connection con = jdbcTemplate.getDataSource().getConnection();		
 		ResultSet rs = con.createStatement()
 				.executeQuery(SELECT_ALL_OFFERS_QUERRY + ";");
@@ -31,9 +32,18 @@ public class OfferDAO {
 					rs.getInt(3),rs.getLong(5),rs.getLong(6),
 					rs.getLong(7),rs.getLong(8),rs.getLong(9),rs.getLong(10)));
 		}
-		return offers;
+		return offers.stream().filter(offer -> companyId == null || offer.getCompanyRegId().equals(companyId))
+				.sorted((o1, o2) -> {
+					if (sortBy == null) return 1;
+					switch (sortBy) {
+					case "offerTitle" : return o1.getTitle().compareTo(o2.getTitle());
+					case "salaryAsc" : return o1.getSalary() - o2.getSalary();
+					case "salaryDsc" : return o2.getSalary() - o1.getSalary();
+					default : return 1;
+					}
+				})
+				.collect(Collectors.toList());
 	}
-	
 	
 	@Autowired
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
