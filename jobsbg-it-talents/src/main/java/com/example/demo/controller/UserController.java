@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.RegistrationDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.DeletedUserException;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -49,12 +51,16 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public void login(@RequestBody LoginDTO user, HttpServletRequest request) throws NoSuchElementException {
+	public void login(@RequestBody LoginDTO user, HttpServletRequest request) throws NoSuchElementException, DeletedUserException {
 		try {
 			RegistrationDTO u = userDao.login(user);
+			if(u.isDeleted()) {
+				throw new DeletedUserException("This user was deleted");
+			}
 			HttpSession session = request.getSession();
 			session.setMaxInactiveInterval(SESSION_MAX_INACTIVE_SECONDS);
 			session.setAttribute("userId", u.getId());
+			session.setAttribute("user", u);
 		} catch (SQLException | NoSuchElementException e) {
 			e.printStackTrace();
 		} catch(NullPointerException e) {
@@ -69,6 +75,32 @@ public class UserController {
 		HttpSession session = request.getSession();
 		session.invalidate();
 	}
+	
+	@DeleteMapping("/deleteProfile")
+	public UserProfileDTO deleteProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
+		try {
+			HttpSession session = request.getSession();
+			
+			if(!isLogged(session)) {
+				response.setStatus(401);
+				return null;
+			}
+			
+			long id = (long) session.getAttribute("userId");
+			logout(request);
+			return userDao.deleteProfile(id);
+		}catch (SQLException e) {
+			System.out.println("aaaaaaaaaaa");
+			e.printStackTrace();
+			return null;
+		} catch (NoSuchElementException e) {
+			System.out.println("dsadsadas");
+			e.printStackTrace();
+			return null;
+		} catch(NullPointerException e) {
+			throw new NoSuchElementException("Session expired");
+		}
+	}
 
 	
 	@GetMapping("/profile")
@@ -77,7 +109,7 @@ public class UserController {
 		try {
 			HttpSession session = request.getSession();
 			
-			if(session.getAttribute("userId") == null) {
+			if(!isLogged(session)) {
 				response.setStatus(401);
 				return null;
 			}
@@ -95,6 +127,12 @@ public class UserController {
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		}
+	}
+	
+	
+	
+	private boolean isLogged(HttpSession session) {
+		return !(session.getAttribute("userId") == null);
 	}
 	
 	

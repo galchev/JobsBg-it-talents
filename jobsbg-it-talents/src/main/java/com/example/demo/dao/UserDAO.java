@@ -88,6 +88,17 @@ public class UserDAO {
 		return userToReturn;
 	}
 	
+	public UserProfileDTO deleteProfile(long id) throws SQLException, NoSuchElementException {
+		
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		
+		con.createStatement().executeUpdate("update registrations set is_deleted = 1 where registration_id = "+id+";");
+		
+		UserProfileDTO u = this.getUserById(id);
+		
+		return u;
+
+	}
 	
 	public UserProfileDTO getUserProfile(long id) throws SQLException, NoSuchElementException {
 		return this.getUserById(id);
