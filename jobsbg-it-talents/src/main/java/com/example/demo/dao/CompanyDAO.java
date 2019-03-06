@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
 import com.example.demo.dto.EditProfileCompanyDTO;
 import com.example.demo.dto.EditUserProfileDTO;
+import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
@@ -119,5 +121,31 @@ public class CompanyDAO {
 		if(!(name.trim().length() >= 2) && name.matches(regex)) {
 			throw new InvalidNameException("Sorry first or last name is invalid");
 		}
+	}
+
+	public long addNewOffer(OfferDTO offer) throws SQLException {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		con.setAutoCommit(false);
+		try{PreparedStatement pst = (PreparedStatement) 
+				con.prepareStatement("insert into offers(title, salary, date,location_id,job_type_id,job_level_id,job_language_id,job_category_id,company_reg_id) values(?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+		pst.setString(1, offer.getTitle());
+		pst.setInt(2, offer.getSalary());
+		pst.setString(3, offer.getDate());
+		pst.setLong(4, offer.getLocationId());
+		pst.setLong(5, offer.getJobTypeId());
+		pst.setLong(6, offer.getJobLevelId());
+		pst.setLong(7, offer.getJobLanguageId());
+		pst.setLong(8, offer.getJobCategoryId());
+		pst.setLong(9, offer.getCompanyRegId());
+		pst.executeUpdate();
+		}
+		catch(Exception e) {
+			con.rollback();
+			throw e;
+		}
+		finally {
+			con.setAutoCommit(true);
+		}
+		return offer.getId();
 	}
 }

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.15, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: jobs-bg
+-- Host: localhost    Database: jobs-bg
 -- ------------------------------------------------------
 -- Server version	8.0.15
 
@@ -59,7 +59,7 @@ CREATE TABLE `cities` (
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_cities_countries1_idx` (`country_id`),
   CONSTRAINT `fk_cities_countries1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +68,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+INSERT INTO `cities` VALUES (1,'Sofia',1),(2,'Vratsa',1),(3,'Dobrinishte',1);
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +113,7 @@ CREATE TABLE `countries` (
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`country_id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,6 +122,7 @@ CREATE TABLE `countries` (
 
 LOCK TABLES `countries` WRITE;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
+INSERT INTO `countries` VALUES (1,'Bulgaria'),(3,'France'),(2,'Romania'),(4,'USA');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,7 +137,7 @@ CREATE TABLE `job_category` (
   `job_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category` varchar(45) NOT NULL,
   PRIMARY KEY (`job_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,6 +146,7 @@ CREATE TABLE `job_category` (
 
 LOCK TABLES `job_category` WRITE;
 /*!40000 ALTER TABLE `job_category` DISABLE KEYS */;
+INSERT INTO `job_category` VALUES (1,'programist'),(2,'engineer');
 /*!40000 ALTER TABLE `job_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +161,7 @@ CREATE TABLE `job_languages` (
   `job_language_id` int(11) NOT NULL AUTO_INCREMENT,
   `language` varchar(45) NOT NULL,
   PRIMARY KEY (`job_language_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,6 +170,7 @@ CREATE TABLE `job_languages` (
 
 LOCK TABLES `job_languages` WRITE;
 /*!40000 ALTER TABLE `job_languages` DISABLE KEYS */;
+INSERT INTO `job_languages` VALUES (1,'bulgarian'),(2,'english');
 /*!40000 ALTER TABLE `job_languages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +208,7 @@ CREATE TABLE `job_types` (
   `job_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL,
   PRIMARY KEY (`job_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,6 +217,7 @@ CREATE TABLE `job_types` (
 
 LOCK TABLES `job_types` WRITE;
 /*!40000 ALTER TABLE `job_types` DISABLE KEYS */;
+INSERT INTO `job_types` VALUES (1,'8hours'),(2,'4hours'),(3,'6hours');
 /*!40000 ALTER TABLE `job_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,4 +358,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-06 15:29:46
+-- Dump completed on 2019-03-06 16:06:06

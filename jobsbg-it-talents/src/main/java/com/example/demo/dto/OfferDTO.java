@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 
@@ -7,7 +8,7 @@ public class OfferDTO {
 	private long id;
 	private String title;
 	private int salary;
-	private LocalDate date;
+	private String date;
 	private long locationId;
 	private long jobTypeId;
 	private long jobLevelId;
@@ -21,7 +22,7 @@ public class OfferDTO {
 		this.id = id;
 		this.title = title;
 		this.salary = salary;
-		this.date = LocalDate.now();
+		this.date ="1999-01-01";
 		this.locationId = locationId;
 		this.jobTypeId = jobTypeId;
 		this.jobLevelId = jobLevelId;
@@ -42,7 +43,7 @@ public class OfferDTO {
 		return salary;
 	}
 
-	public LocalDate getDate() {
+	public String getDate() {
 		return date;
 	}
 

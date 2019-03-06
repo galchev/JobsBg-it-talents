@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
 import com.example.demo.dto.EditProfileCompanyDTO;
 import com.example.demo.dto.EditUserProfileDTO;
+import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
 
@@ -29,7 +31,15 @@ public class CompanyController {
 	@Autowired
 	private CompanyDAO companyDao;
 	
-	
+	@PostMapping("/companyProfile/addOffer")
+	public long addOffer(@RequestBody OfferDTO offer) {
+		try {
+			return this.companyDao.addNewOffer(offer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 	@GetMapping("/companies")
 	public List<CompanyDTO> getAllCompanies(){
 		try {

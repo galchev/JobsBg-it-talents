@@ -70,36 +70,6 @@ public class Offer {
 		return companyRegId;
 	}
 
-	public List<Country> getAllCountries() throws SQLException {
-		Connection con = jdbcTemplate.getDataSource().getConnection();
-		ResultSet rsCountries = con.createStatement()
-				.executeQuery("SELECT * FROM `jobs-bg`.countries;");
-		List<Country> countries = new LinkedList<>();
-		while(rsCountries.next()) {
-			countries.add(new Country(rsCountries.getLong(1),rsCountries.getString(2)));
-		}
-		return countries;
-	}
-	public List<City> getAllCities() throws SQLException {
-		Connection con = jdbcTemplate.getDataSource().getConnection();
-		ResultSet rsCities = con.createStatement()
-				.executeQuery("SELECT * FROM `jobs-bg`.cities;");
-		List<City> cities = new LinkedList<>();
-		while(rsCities.next()) {
-			cities.add(new City(rsCities.getLong(1),rsCities.getString(2),rsCities.getLong(3)));
-		}
-		return cities;
-	}
-	public List<Location> getAllLocations() throws SQLException{
-		Connection con = jdbcTemplate.getDataSource().getConnection();
-		ResultSet rs = con.createStatement()
-				.executeQuery("SELECT * FROM `jobs-bg`.locations;");
-		List<Location> locations = new LinkedList<>();
-		while(rs.next()) {
-			locations.add(new Location(rs.getLong(1),rs.getString(2),rs.getInt(3),rs.getLong(4)));
-		}
-		return locations;
-	}
 	
 	
 	

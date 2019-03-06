@@ -34,7 +34,7 @@ import com.example.demo.model.User;
 @RestController
 public class UserController {
 
-	private static final int SESSION_MAX_INACTIVE_SECONDS = 10;
+	private static final int SESSION_MAX_INACTIVE_SECONDS = 60;
 	@Autowired
 	private UserDAO userDao;
 	
