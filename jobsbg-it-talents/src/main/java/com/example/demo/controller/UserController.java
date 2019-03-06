@@ -117,7 +117,7 @@ public class UserController {
 			
 			long id = (long) session.getAttribute("userId");
 			
-			userDao.editProfile(id, user);
+			userDao.editProfileUser(id, user);
 			
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");

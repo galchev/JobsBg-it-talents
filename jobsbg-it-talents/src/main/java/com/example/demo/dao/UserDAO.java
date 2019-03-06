@@ -103,7 +103,7 @@ public class UserDAO {
 	}
 	
 	
-	public void editProfile(long id, EditUserProfileDTO u) throws SQLException  {
+	public void editProfileUser(long id, EditUserProfileDTO u) throws SQLException  {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try {

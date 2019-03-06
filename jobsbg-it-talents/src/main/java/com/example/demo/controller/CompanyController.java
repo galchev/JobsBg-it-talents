@@ -11,11 +11,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.CompanyDAO;
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
+import com.example.demo.dto.EditProfileCompanyDTO;
+import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
 
@@ -61,6 +65,32 @@ public class CompanyController {
 			throw new NoSuchElementException("Session expired");
 		}
 	}
+	
+	@PutMapping("/editCompanyProfile")
+	public void editProfile(@RequestBody EditProfileCompanyDTO company, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException  {
+		try {
+			HttpSession session = request.getSession();
+			
+			if(!isLogged(session)) {
+				response.setStatus(401);
+				return;
+			}
+			
+			long id = (long) session.getAttribute("userId");
+			
+			companyDao.editProfileCompany(id, company);
+			
+		} catch(NullPointerException e) {
+			throw new NoSuchElementException("Session expired");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private boolean isLogged(HttpSession session) {
 		return !(session.getAttribute("userId") == null);
 	}
