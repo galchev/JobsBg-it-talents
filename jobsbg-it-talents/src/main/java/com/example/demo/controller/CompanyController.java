@@ -24,6 +24,7 @@ import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.exceptions.UnauthorizedException;
 
 @RestController
 public class CompanyController {
@@ -32,14 +33,28 @@ public class CompanyController {
 	private CompanyDAO companyDao;
 	
 	@PostMapping("/companyProfile/addOffer")
-	public long addOffer(@RequestBody OfferDTO offer) {
+	public long addOffer(@RequestBody OfferDTO offer,HttpServletRequest request, HttpServletResponse response) {
+		
 		try {
-			return this.companyDao.addNewOffer(offer);
+			HttpSession session = request.getSession();
+			
+			System.out.println(session.getAttribute("companyId"));
+			long id = (long) session.getAttribute("userId");
+			CompanyProfileDTO companyCheck = companyDao.getCompanyById(id);
+			int bulstat = 0;
+			bulstat = companyCheck.getBulstat();
+			
+			if(!isLogged(session) || bulstat<0 ) {
+				response.setStatus(401);
+				throw new UnauthorizedException("Unauthorized");
+			}
+			return this.companyDao.addNewOffer(offer,id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			response.setStatus(401);
 			return -1;
 		}
 	}
+	
 	@GetMapping("/companies")
 	public List<CompanyDTO> getAllCompanies(){
 		try {

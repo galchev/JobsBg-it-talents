@@ -123,7 +123,8 @@ public class CompanyDAO {
 		}
 	}
 
-	public long addNewOffer(OfferDTO offer) throws SQLException {
+	public long addNewOffer(OfferDTO offer, long id) throws SQLException {
+		
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try{PreparedStatement pst = (PreparedStatement) 
@@ -148,4 +149,8 @@ public class CompanyDAO {
 		}
 		return offer.getId();
 	}
+	
+	
+	
 }
+
