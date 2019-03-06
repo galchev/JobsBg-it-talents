@@ -14,7 +14,7 @@ public class UserProfileDTO {
 	
 	
 	public UserProfileDTO(long id, String firstName, String lastName, String email, String password, String phoneNumber,
-			boolean isAdmin, boolean isDeleted) {
+			boolean isAdmin, boolean isDeleted, String pictureUrl) {
 
 		this.userId = id;
 		this.firstName = firstName;
@@ -24,9 +24,29 @@ public class UserProfileDTO {
 		this.phoneNumber = phoneNumber;
 		this.isAdmin = isAdmin;
 		this.isDeleted = isDeleted;
-		
+		this.pictureUrl = pictureUrl;
 	}
 	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}

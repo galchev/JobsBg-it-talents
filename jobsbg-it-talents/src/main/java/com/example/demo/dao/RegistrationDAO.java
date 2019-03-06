@@ -51,7 +51,11 @@ public class RegistrationDAO {
 	
 	public long registerUser(UserProfileDTO user) throws Exception {
 				
+		
 		Connection con = jdbcTemplate.getDataSource().getConnection();
+		
+		
+		
 		con.setAutoCommit(false);
 		try {
 			PreparedStatement pst = (PreparedStatement) con.prepareStatement("insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
@@ -148,7 +152,7 @@ public class RegistrationDAO {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	private void isValidName(String name, String regex) throws InvalidNameException {
+	public void isValidName(String name, String regex) throws InvalidNameException {
 		if(!(name.trim().length() >= 2) && name.matches(regex)) {
 			throw new InvalidNameException("Sorry first or last name is invalid");
 		}
