@@ -46,10 +46,13 @@ public class CompanyDAO implements IStringToSha1{
 		
 		List<CompanyDTO> companies = new LinkedList<>();
 		while(rs.next()) {
-			companies.add(new CompanyDTO(rs.getLong(1), rs.getString(2),
-					rs.getString(3), rs.getString(5), rs.getInt(4), 
-					rs.getString(6), rs.getString(7), rs.getString(8)));
+			CompanyDTO c = new CompanyDTO(rs.getLong(1), rs.getString(2),
+					rs.getString(5), rs.getString(3), rs.getInt(4), 
+					rs.getString(6), rs.getString(7), rs.getString(8));
+			companies.add(c);
+
 		}		
+		
 		
 		return companies;
 	}
@@ -65,7 +68,7 @@ public class CompanyDAO implements IStringToSha1{
 		while(rs.next()) {
 			companiesCount++;
 		companyToReturn = new CompanyProfileDTO(rs.getLong(1), rs.getString(2),
-				rs.getString(3), rs.getString(5), rs.getInt(4), 
+				rs.getString(5), rs.getString(3), rs.getInt(4), 
 				rs.getString(6), rs.getString(7), rs.getString(8));
 		}
 			if(companiesCount == COMPANIES_WITH_SAME_ID_COUNT) {

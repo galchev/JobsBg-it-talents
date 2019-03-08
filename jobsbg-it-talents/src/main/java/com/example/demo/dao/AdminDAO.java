@@ -38,7 +38,7 @@ public class AdminDAO {
 				"");
 		
 		if(rowsAffected <= 0) {
-			throw new NoSuchElementException("Not offer found with id" + id);
+			throw new NoSuchElementException("Not offer found with id " + id);
 		}
 		
 		System.out.println("====" + id);
