@@ -14,10 +14,7 @@ import com.example.demo.interfaces.IStringToSha1;
 public class JobsbgItTalentsApplication {
 
 	public static void main(String[] args) throws SQLException{
-		LocalDate date = LocalDate.now();
-		System.out.println(date);
-		Date d = Date.valueOf(date);
-		System.out.println(d);
+		System.out.println(IStringToSha1.stringToSha1("qwerty"));
 		SpringApplication.run(JobsbgItTalentsApplication.class, args);
 		
 

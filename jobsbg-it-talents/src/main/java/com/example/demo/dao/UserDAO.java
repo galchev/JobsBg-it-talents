@@ -91,7 +91,6 @@ public class UserDAO implements IStringToSha1{
 		
 		ResultSet rs = con.createStatement().executeQuery("select * from registrations r\r\n" + 
 				"where email = '"+user.getEmail()+"' and password = '"+passwordToSha1+"';");
-		
 		RegistrationDTO userToReturn = null;
 		
 		while(rs.next()) {

@@ -31,6 +31,21 @@ public class AdminDAO {
 	}
 	
 	
+	public long deleteOffer(long id) throws SQLException, NoSuchElementException {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		
+		int rowsAffected = con.createStatement().executeUpdate("delete from offers where offer_id = "+id+";\r\n" + 
+				"");
+		
+		if(rowsAffected <= 0) {
+			throw new NoSuchElementException("Not offer found with id " + id);
+		}
+		
+		System.out.println("====" + id);
+		return id;
+	}
+	
+	
 	public boolean isAdmin(long id) throws SQLException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		

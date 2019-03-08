@@ -15,6 +15,16 @@ public class CompanyDTO {
 		return password;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CompanyDTO [companyId=" + companyId + ", email=" + email + ", password=" + password + ", phoneNumber="
+				+ phoneNumber + ", pictureUrl=" + pictureUrl + ", isDeleted=" + isDeleted + ", name=" + name
+				+ ", website=" + website + ", bulstat=" + bulstat + "]";
+	}
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
