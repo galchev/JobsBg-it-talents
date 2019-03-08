@@ -23,10 +23,11 @@ import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Country;
 
 @Component
-public class CompanyDAO {
+public class CompanyDAO implements IStringToSha1{
 	
 	private static final int PHONE_NUMBER_SYMBOLS_COUNT = 10;
 	private static final String PHONE_NUMBER_PREFIX = "08";
@@ -85,7 +86,12 @@ public class CompanyDAO {
 		con.setAutoCommit(false);
 		try {
 			PreparedStatement pst = con.prepareStatement("update registrations set password = ?, phone_number = ?, picture_url = ? where registration_id = '"+id+"';");
-			pst.setString(1, c.getPassword());
+			
+			
+			String passwordToSha1 = IStringToSha1.stringToSha1(c.getPassword());
+			
+			
+			pst.setString(1, passwordToSha1);
 			pst.setString(2, c.getPhoneNumber());
 			pst.setString(3, c.getPictureUrl());
 			
@@ -100,7 +106,6 @@ public class CompanyDAO {
 			isValidName(c.getName(), regex);
 			pst1.executeUpdate();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			con.rollback();
 			e.printStackTrace();
 		}finally {

@@ -14,9 +14,8 @@ public interface IInputStringValidation {
 	
 	default public void isValidName(String name, String regex) throws InvalidNameException {
 		if(!(name.trim().length() >= 2) && name.matches(regex)) {
-			throw new InvalidNameException("Sorry first or last name is invalid");
+			throw new InvalidNameException("Invalid name");
 		}
-		
 		
 	}
 	
@@ -27,6 +26,7 @@ public interface IInputStringValidation {
 				!(pass.trim().length() >= PASSWORD_MIN_SYMBOLS)) {
 			throw new InvalidEmailOrPasswordException("Invalid email or password");
 		}
+		
 		
 		
 	}
