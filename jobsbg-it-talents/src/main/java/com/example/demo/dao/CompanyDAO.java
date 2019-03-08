@@ -129,16 +129,16 @@ public class CompanyDAO {
 		con.setAutoCommit(false);
 		try{PreparedStatement pst = (PreparedStatement) 
 				con.prepareStatement("insert into offers(title, salary, date,location_id,job_type_id,job_level_id,job_language_id,job_category_id,company_reg_id) values(?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-		pst.setString(1, offer.getTitle());
-		pst.setInt(2, offer.getSalary());
-		pst.setString(3, offer.getDate());
-		pst.setLong(4, offer.getLocationId());
-		pst.setLong(5, offer.getJobTypeId());
-		pst.setLong(6, offer.getJobLevelId());
-		pst.setLong(7, offer.getJobLanguageId());
-		pst.setLong(8, offer.getJobCategoryId());
-		pst.setLong(9, offer.getCompanyRegId());
-		pst.executeUpdate();
+			pst.setString(1, offer.getTitle());
+			pst.setInt(2, offer.getSalary());
+			pst.setString(3, offer.getDate());
+			pst.setLong(4, offer.getLocationId());
+			pst.setLong(5, offer.getJobTypeId());
+			pst.setLong(6, offer.getJobLevelId());
+			pst.setLong(7, offer.getJobLanguageId());
+			pst.setLong(8, offer.getJobCategoryId());
+			pst.setLong(9, id);
+			pst.executeUpdate();
 		}
 		catch(Exception e) {
 			con.rollback();
