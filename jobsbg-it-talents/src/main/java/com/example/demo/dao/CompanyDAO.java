@@ -1,10 +1,12 @@
 package com.example.demo.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -128,16 +130,21 @@ public class CompanyDAO {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try{PreparedStatement pst = (PreparedStatement) 
-				con.prepareStatement("insert into offers(title, salary, date,location_id,job_type_id,job_level_id,job_language_id,job_category_id,company_reg_id) values(?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+				con.prepareStatement("insert into offers(title, salary, date, location_id, job_type_id, job_level_id, job_language_id, job_category_id, company_reg_id) values(?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+		offer.setDate(Date.valueOf(LocalDate.now()));
 			pst.setString(1, offer.getTitle());
 			pst.setInt(2, offer.getSalary());
-			pst.setString(3, offer.getDate());
+//			pst.setDate(3, offer.getDate());
+//			pst.setDate(4, Date.valueOf(LocalDate.now()));
+//			offer.setDate(Date.valueOf(LocalDate.now()));
+			pst.setDate(3, offer.getDate());
 			pst.setLong(4, offer.getLocationId());
 			pst.setLong(5, offer.getJobTypeId());
 			pst.setLong(6, offer.getJobLevelId());
 			pst.setLong(7, offer.getJobLanguageId());
 			pst.setLong(8, offer.getJobCategoryId());
 			pst.setLong(9, id);
+//			offer.setCompanyRegId(id);
 			pst.executeUpdate();
 		}
 		catch(Exception e) {

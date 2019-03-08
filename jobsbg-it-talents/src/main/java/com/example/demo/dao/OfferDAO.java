@@ -44,9 +44,12 @@ public class OfferDAO {
 		
 		List<OfferDTO> offers = new LinkedList<>();
 		while(rs.next()) {
-			offers.add(new OfferDTO(rs.getLong(1), rs.getString(2),
-					rs.getInt(3),rs.getLong(5),rs.getLong(6),
-					rs.getLong(7),rs.getLong(8),rs.getLong(9),rs.getLong(10)));
+			System.out.println("aaaaaaa" + rs.getDate(4));
+		OfferDTO o = new OfferDTO(rs.getLong(1), rs.getString(2),
+				rs.getInt(3), rs.getDate(4), rs.getLong(5),rs.getLong(6),
+				rs.getLong(7),rs.getLong(8), rs.getLong(9), rs.getLong(10));
+		System.out.println(o);
+			offers.add(o);
 		}
 		return offers.stream().filter(offer -> companyId == null || offer.getCompanyRegId().equals(companyId))
 				.sorted((o1, o2) -> {

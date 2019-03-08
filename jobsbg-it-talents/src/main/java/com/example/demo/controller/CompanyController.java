@@ -46,11 +46,14 @@ public class CompanyController implements IRegistrationLogin{
 			bulstat = companyCheck.getBulstat();
 			
 			if(!isLogged(session) || bulstat<0 ) {
+				System.out.println("4555555555");
 				response.setStatus(401);
 				throw new UnauthorizedException("Unauthorized");
 			}
 			return this.companyDao.addNewOffer(offer,id);
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("dasdasdasdasd");
 			response.setStatus(401);
 			return -1;
 		}
