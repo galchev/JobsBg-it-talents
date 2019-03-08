@@ -25,11 +25,12 @@ import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
 
 @Component
-public class UserDAO {
+public class UserDAO implements IStringToSha1{
 	private static final int USERS_WITH_SAME_ID_COUNT = 1;
 	private static final int PHONE_NUMBER_SYMBOLS_COUNT = 10;
 	private static final String PHONE_NUMBER_PREFIX = "08";
@@ -86,8 +87,10 @@ public class UserDAO {
 	public RegistrationDTO login(LoginDTO user) throws SQLException, NoSuchElementException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		
+		String passwordToSha1 = IStringToSha1.stringToSha1(user.getPassword());
+		
 		ResultSet rs = con.createStatement().executeQuery("select * from registrations r\r\n" + 
-				"where email = '"+user.getEmail()+"' and password = '"+user.getPassword()+"';");
+				"where email = '"+user.getEmail()+"' and password = '"+passwordToSha1+"';");
 		
 		RegistrationDTO userToReturn = null;
 		
@@ -108,7 +111,8 @@ public class UserDAO {
 		con.setAutoCommit(false);
 		try {
 			PreparedStatement pst = con.prepareStatement("update registrations set password = ?, phone_number = ?, picture_url = ? where registration_id = '"+id+"';");
-			pst.setString(1, u.getPassword());
+			String passwordToSha1 = IStringToSha1.stringToSha1(u.getPassword());
+			pst.setString(1, passwordToSha1);
 			pst.setString(2, u.getPhoneNumber());
 			pst.setString(3, u.getPictureUrl());
 			
