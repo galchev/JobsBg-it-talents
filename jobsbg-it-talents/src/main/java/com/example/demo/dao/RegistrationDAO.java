@@ -15,15 +15,17 @@ import org.springframework.stereotype.Component;
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.InvalidBulstatException;
 import com.example.demo.exceptions.InvalidEmailOrPasswordException;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.interfaces.IInputStringValidation;
+import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
 
 @Component
-public class RegistrationDAO implements IInputStringValidation{
+public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 	
 
 	
@@ -58,12 +60,16 @@ public class RegistrationDAO implements IInputStringValidation{
 		try {
 			PreparedStatement pst = (PreparedStatement) con.prepareStatement("insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, user.getEmail());
-			pst.setString(2, user.getPassword());
+			String passwordToSha1 = IStringToSha1.stringToSha1(user.getPassword());
+			pst.setString(2, passwordToSha1);
 			pst.setString(3, user.getPhoneNumber());
 			pst.setString(4, user.getPictureUrl());
 
 			
-			isValidEmailAndPassword(user.getEmail(), user.getPassword());
+			isValidEmailAndPassword(user.getEmail(), passwordToSha1);
+			if(!this.isAvailableEmail(user.getEmail())) {
+				throw new InvalidEmailOrPasswordException("Email is not free");
+			}
 			isValidPhoneNumber(user.getPhoneNumber());
 	
 			pst.executeUpdate();
@@ -86,32 +92,34 @@ public class RegistrationDAO implements IInputStringValidation{
 		}
 		catch(Exception e) {
 			con.rollback();
-			System.out.println("EXCEPTIOOOOOON");
 			throw e;
 		}
 		finally {
-			System.out.println("finally executed");
 			con.setAutoCommit(true);
 		}
 		return user.getUserId();	
 	}
 
 	
-	public long registerCompany(CompanyDTO company) throws Exception {
+	public long registerCompany(CompanyDTO company) throws Exception{
 		
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try {
 			PreparedStatement pst = (PreparedStatement) con.prepareStatement("insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, company.getEmail());
-			pst.setString(2, company.getPassword());
+			String passwordToSha1 = IStringToSha1.stringToSha1(company.getPassword());
+			pst.setString(2,passwordToSha1 );
 			pst.setString(3, company.getPhoneNumber());
 			pst.setString(4, company.getPictureUrl());
 
 			
-			isValidEmailAndPassword(company.getEmail(), company.getPassword());
+			isValidEmailAndPassword(company.getEmail(), passwordToSha1);
+			System.out.println(this.isAvailableEmail(company.getEmail()));
+			if(!this.isAvailableEmail(company.getEmail())) {
+				throw new InvalidEmailOrPasswordException("Email is not free");
+			}
 			isValidPhoneNumber(company.getPhoneNumber());
-	
 			pst.executeUpdate();
 			ResultSet rs = pst.getGeneratedKeys();
 			rs.next();
@@ -121,8 +129,10 @@ public class RegistrationDAO implements IInputStringValidation{
 			usersPst.setLong(1, id);
 			usersPst.setString(2, company.getName());
 			usersPst.setString(3, company.getWebsite());
-			usersPst.setInt(4, company.getBulstat());
-
+			if(!this.isValidBulstat(company.getBulstat())) {
+				throw new InvalidBulstatException("Invalid bulstat");
+			}
+				usersPst.setInt(4, company.getBulstat());
 			
 			String regex = "[0-9]+";
 			isValidName(company.getName(), regex);
@@ -136,6 +146,7 @@ public class RegistrationDAO implements IInputStringValidation{
 			System.out.println("EXCEPTIOOOOOON");
 			throw e;
 		}
+		
 		finally {
 			System.out.println("finally executed");
 			con.setAutoCommit(true);
@@ -143,34 +154,40 @@ public class RegistrationDAO implements IInputStringValidation{
 		return company.getCompanyId();	
 	}
 	
-
-
+	public boolean isAvailableEmail(String email) throws SQLException {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		System.out.println("ASUHASIHIHASIYSAIHASIHASHIASUASHISAHASHAUASHIAS " + email);
+		ResultSet rs = con.createStatement()
+				.executeQuery("SELECT * FROM `jobs-bg`.registrations where email ='"+email+"';");
+		byte count = 0;
+		while(rs.next()) {
+			System.out.println("VLIZAM V NEXT");
+			count++;
+		}
+		if(count != 0) {
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public boolean isValidBulstat(int bulstat) throws SQLException {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs = con.createStatement()
+				.executeQuery("SELECT * FROM `jobs-bg`.companies where bulstat = '"+bulstat+"';");
+		byte count = 0;
+		while(rs.next()) {
+			count++;
+		}
+		if(count != 0) {
+			return false;
+		}
+		return true;
+	}
 	@Autowired
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-	
-//	public void isValidName(String name, String regex) throws InvalidNameException {
-//		if(!(name.trim().length() >= 2) && name.matches(regex)) {
-//			throw new InvalidNameException("Sorry first or last name is invalid");
-//		}
-//	}
-//	
-//	private void isValidEmailAndPassword(String email, String pass) throws InvalidEmailOrPasswordException {
-//		if(!email.matches(EMAIL_REGEX) ||
-//				!(pass.trim().length() >= PASSWORD_MIN_SYMBOLS)) {
-//			throw new InvalidEmailOrPasswordException("Invalid email or password");
-//		}
-//	}
-//
-//	private void isValidPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
-//		if(!(phoneNumber.startsWith(PHONE_NUMBER_PREFIX) &&
-//				phoneNumber.length() == PHONE_NUMBER_SYMBOLS_COUNT)) {
-//			throw new InvalidPhoneNumberException("Invalid phone number");
-//		}
-//	}
-//	
-
-	
+		
 	
 }

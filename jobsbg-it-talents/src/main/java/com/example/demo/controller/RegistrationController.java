@@ -14,6 +14,7 @@ import com.example.demo.dao.RegistrationDAO;
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.InvalidBulstatException;
 import com.example.demo.exceptions.InvalidEmailOrPasswordException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.model.Registration;
@@ -38,28 +39,16 @@ public class RegistrationController {
 	}
 	
 	@PostMapping("/registrationsUser")
-	public long register(@RequestBody UserProfileDTO user) {
+	public long register(@RequestBody UserProfileDTO user) throws Exception {
 		
-		try {
-			return this.regDao.registerUser(user);
-		} catch (Exception e) {
-			System.out.println("CONTROLLER EXCEPTION");
-			e.printStackTrace();
-			return -1;
-		}
+		return this.regDao.registerUser(user);
 		
 	}
 	
 	@PostMapping("/registrationsCompany")
-	public long register(@RequestBody CompanyDTO company) {
+	public long register(@RequestBody CompanyDTO company) throws Exception{
 		
-		try {
-			return this.regDao.registerCompany(company);
-		} catch (Exception e) {
-			System.out.println("CONTROLLER EXCEPTION");
-			e.printStackTrace();
-			return -1;
-		}
+		return this.regDao.registerCompany(company);
 		
 		
 	}
