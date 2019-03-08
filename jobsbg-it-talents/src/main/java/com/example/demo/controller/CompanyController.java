@@ -25,9 +25,10 @@ import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.UnauthorizedException;
+import com.example.demo.interfaces.IRegistrationLogin;
 
 @RestController
-public class CompanyController {
+public class CompanyController implements IRegistrationLogin{
 
 	@Autowired
 	private CompanyDAO companyDao;
@@ -114,9 +115,5 @@ public class CompanyController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	private boolean isLogged(HttpSession session) {
-		return !(session.getAttribute("userId") == null);
 	}
 }

@@ -16,10 +16,11 @@ import com.example.demo.dao.UserDAO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.NotAdminException;
+import com.example.demo.interfaces.IRegistrationLogin;
 import com.example.demo.model.User;
 
 @RestController
-public class AdminController {
+public class AdminController implements IRegistrationLogin{
 	
 //	@Autowired
 //	private UserDAO userDao;
@@ -46,7 +47,4 @@ public class AdminController {
 			adminDao.deleteProfile(id);	
 	}
 	
-	private boolean isLogged(HttpSession session) {
-		return !(session.getAttribute("userId") == null);
-	}
 }

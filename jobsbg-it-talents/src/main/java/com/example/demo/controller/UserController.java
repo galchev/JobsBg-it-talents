@@ -28,11 +28,12 @@ import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.DeletedUserException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.interfaces.IRegistrationLogin;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
 
 @RestController
-public class UserController {
+public class UserController implements IRegistrationLogin{
 
 	private static final int SESSION_MAX_INACTIVE_SECONDS = 60;
 	@Autowired
@@ -158,9 +159,6 @@ public class UserController {
 	
 	
 	
-	private boolean isLogged(HttpSession session) {
-		return !(session.getAttribute("userId") == null);
-	}
 	
 	
 	
