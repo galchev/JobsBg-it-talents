@@ -1,4 +1,4 @@
-package com.example.demo.dao;
+	package com.example.demo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,17 +18,15 @@ import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidEmailOrPasswordException;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
+import com.example.demo.interfaces.IInputStringValidation;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
 
 @Component
-public class RegistrationDAO {
+public class RegistrationDAO implements IInputStringValidation{
 	
 
-	private static final int PHONE_NUMBER_SYMBOLS_COUNT = 10;
-	private static final String PHONE_NUMBER_PREFIX = "08";
-	private static final int PASSWORD_MIN_SYMBOLS = 5;
-	private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+	
 	
 	private static final String GET_ALL_REGISTRATIONS = "select * from registrations";
 	private JdbcTemplate jdbcTemplate;
@@ -152,26 +150,26 @@ public class RegistrationDAO {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	public void isValidName(String name, String regex) throws InvalidNameException {
-		if(!(name.trim().length() >= 2) && name.matches(regex)) {
-			throw new InvalidNameException("Sorry first or last name is invalid");
-		}
-	}
-	
-	private void isValidEmailAndPassword(String email, String pass) throws InvalidEmailOrPasswordException {
-		if(!email.matches(EMAIL_REGEX) ||
-				!(pass.trim().length() >= PASSWORD_MIN_SYMBOLS)) {
-			throw new InvalidEmailOrPasswordException("Invalid email or password");
-		}
-	}
-
-	private void isValidPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
-		if(!(phoneNumber.startsWith(PHONE_NUMBER_PREFIX) &&
-				phoneNumber.length() == PHONE_NUMBER_SYMBOLS_COUNT)) {
-			throw new InvalidPhoneNumberException("Invalid phone number");
-		}
-	}
-	
+//	public void isValidName(String name, String regex) throws InvalidNameException {
+//		if(!(name.trim().length() >= 2) && name.matches(regex)) {
+//			throw new InvalidNameException("Sorry first or last name is invalid");
+//		}
+//	}
+//	
+//	private void isValidEmailAndPassword(String email, String pass) throws InvalidEmailOrPasswordException {
+//		if(!email.matches(EMAIL_REGEX) ||
+//				!(pass.trim().length() >= PASSWORD_MIN_SYMBOLS)) {
+//			throw new InvalidEmailOrPasswordException("Invalid email or password");
+//		}
+//	}
+//
+//	private void isValidPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
+//		if(!(phoneNumber.startsWith(PHONE_NUMBER_PREFIX) &&
+//				phoneNumber.length() == PHONE_NUMBER_SYMBOLS_COUNT)) {
+//			throw new InvalidPhoneNumberException("Invalid phone number");
+//		}
+//	}
+//	
 
 	
 	
