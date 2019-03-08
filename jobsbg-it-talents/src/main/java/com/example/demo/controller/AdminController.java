@@ -47,4 +47,24 @@ public class AdminController implements IRegistrationLogin{
 			adminDao.deleteProfile(id);	
 	}
 	
+	@DeleteMapping("/deleteOffer/{id}")
+	public void deleteOffer(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws NotAdminException, SQLException, NoSuchElementException{
+		
+			System.out.println("id" + id);
+			HttpSession session = request.getSession();
+			
+			if(!isLogged(session)) {
+				response.setStatus(401);
+				return;
+			} else {
+				long currentUserId = (long) session.getAttribute("userId");
+				System.out.println(currentUserId + "-------");
+					if(!adminDao.isAdmin(currentUserId)) {
+						throw new NotAdminException("Not authorize to delete offers");
+					}
+			}
+			
+			adminDao.deleteOffer(id);	
+	}
+	
 }
