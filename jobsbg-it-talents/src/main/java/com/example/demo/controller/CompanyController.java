@@ -39,7 +39,7 @@ public class CompanyController implements IRegistrationLogin{
 		try {
 			HttpSession session = request.getSession();
 			
-			System.out.println(session.getAttribute("companyId"));
+//			System.out.println(session.getAttribute("companyId"));
 			long id = (long) session.getAttribute("userId");
 			CompanyProfileDTO companyCheck = companyDao.getCompanyById(id);
 			int bulstat = 0;
