@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dao.CompanyDAO;
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
+import com.example.demo.dto.EditOfferDTO;
 import com.example.demo.dto.EditProfileCompanyDTO;
 import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.InvalidOfferOwnerException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.exceptions.NotOfferFoundException;
 import com.example.demo.exceptions.UnauthorizedException;
 import com.example.demo.interfaces.IRegistrationLogin;
 
@@ -39,14 +42,12 @@ public class CompanyController implements IRegistrationLogin{
 		try {
 			HttpSession session = request.getSession();
 			
-//			System.out.println(session.getAttribute("companyId"));
 			long id = (long) session.getAttribute("userId");
 			CompanyProfileDTO companyCheck = companyDao.getCompanyById(id);
 			int bulstat = 0;
 			bulstat = companyCheck.getBulstat();
 			
 			if(!isLogged(session) || bulstat<0 ) {
-				System.out.println("4555555555");
 				response.setStatus(401);
 				throw new UnauthorizedException("Unauthorized");
 			}
@@ -58,7 +59,31 @@ public class CompanyController implements IRegistrationLogin{
 			return -1;
 		}
 	}
-	
+	@PutMapping("/companyProfile/editOffer/{offerId}")
+	public void editOffer(@PathVariable Long offerId, @RequestBody EditOfferDTO offer, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException {
+		try {
+			HttpSession session = request.getSession();
+			
+			if(!isLogged(session)) {
+				response.setStatus(401);
+				return;
+			}
+			
+			if(!companyDao.isValidOfferOwning(offerId).equals(session.getAttribute("userId"))) {
+				throw new InvalidOfferOwnerException("This offer can not be edited");
+			}
+			System.out.println("OFFER ID" + offer.getId());
+			companyDao.editOffer(offer,offerId);
+			
+			
+			
+			
+		} catch(NullPointerException e) {
+			throw new NoSuchElementException("Session expired");
+		} catch (NotOfferFoundException e) {
+			throw new NotOfferFoundException("Not offer with this id");
+		}
+	}
 	@GetMapping("/companies")
 	public List<CompanyDTO> getAllCompanies(){
 		try {

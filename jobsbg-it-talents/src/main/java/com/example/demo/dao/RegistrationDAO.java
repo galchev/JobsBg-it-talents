@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.CompanyDTO;
+import com.example.demo.dto.CompanyProfileDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidBulstatException;
@@ -101,12 +102,13 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 	}
 
 	
-	public long registerCompany(CompanyDTO company) throws Exception{
+	public long registerCompany(CompanyProfileDTO company) throws Exception{
 		
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try {
 			PreparedStatement pst = (PreparedStatement) con.prepareStatement("insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+			System.out.println("COMPANY EMAIL " + company.getEmail());
 			pst.setString(1, company.getEmail());
 			String passwordToSha1 = IStringToSha1.stringToSha1(company.getPassword());
 			pst.setString(2,passwordToSha1 );
@@ -129,6 +131,7 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 			usersPst.setLong(1, id);
 			usersPst.setString(2, company.getName());
 			usersPst.setString(3, company.getWebsite());
+			System.out.println("COMPANY website " + company.getWebsite());
 			if(!this.isValidBulstat(company.getBulstat())) {
 				throw new InvalidBulstatException("Invalid bulstat");
 			}
@@ -156,7 +159,6 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 	
 	public boolean isAvailableEmail(String email) throws SQLException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
-		System.out.println("ASUHASIHIHASIYSAIHASIHASHIASUASHISAHASHAUASHIAS " + email);
 		ResultSet rs = con.createStatement()
 				.executeQuery("SELECT * FROM `jobs-bg`.registrations where email ='"+email+"';");
 		byte count = 0;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.RegistrationDAO;
 import com.example.demo.dto.CompanyDTO;
+import com.example.demo.dto.CompanyProfileDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidBulstatException;
@@ -46,7 +47,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping("/registrationsCompany")
-	public long register(@RequestBody CompanyDTO company) throws Exception{
+	public long register(@RequestBody CompanyProfileDTO company) throws Exception{
 		
 		return this.regDao.registerCompany(company);
 		

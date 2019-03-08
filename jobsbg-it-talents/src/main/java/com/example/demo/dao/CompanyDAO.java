@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
+import com.example.demo.dto.EditOfferDTO;
 import com.example.demo.dto.EditProfileCompanyDTO;
 import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.OfferDTO;
@@ -23,6 +24,7 @@ import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.exceptions.NotOfferFoundException;
 import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Country;
 
@@ -47,7 +49,7 @@ public class CompanyDAO implements IStringToSha1{
 		List<CompanyDTO> companies = new LinkedList<>();
 		while(rs.next()) {
 			companies.add(new CompanyDTO(rs.getLong(1), rs.getString(2),
-					rs.getString(3), rs.getString(5), rs.getInt(4), 
+					rs.getString(5), rs.getString(3), rs.getInt(4), 
 					rs.getString(6), rs.getString(7), rs.getString(8)));
 		}		
 		
@@ -65,7 +67,7 @@ public class CompanyDAO implements IStringToSha1{
 		while(rs.next()) {
 			companiesCount++;
 		companyToReturn = new CompanyProfileDTO(rs.getLong(1), rs.getString(2),
-				rs.getString(3), rs.getString(5), rs.getInt(4), 
+				rs.getString(5), rs.getString(3), rs.getInt(4), 
 				rs.getString(6), rs.getString(7), rs.getString(8));
 		}
 			if(companiesCount == COMPANIES_WITH_SAME_ID_COUNT) {
@@ -160,6 +162,50 @@ public class CompanyDAO implements IStringToSha1{
 			con.setAutoCommit(true);
 		}
 		return offer.getId();
+	}
+
+	public void editOffer(EditOfferDTO offer,long id) throws SQLException {
+
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		con.setAutoCommit(false);
+		
+		
+		try {
+			PreparedStatement pst = con.prepareStatement
+					("update `jobs-bg`.offers set title = ?, salary = ?, location_id = ?, job_type_id = ?, job_level_id = ?, job_language_id = ?, job_category_id = ?  where offer_id = "+id+";");
+			offer.setId(id);
+			pst.setString(1, offer.getTitle());
+			pst.setInt(2, offer.getSalary());
+			pst.setLong(3, offer.getLocationId());
+			pst.setLong(4, offer.getJobTypeId());
+			pst.setLong(5, offer.getJobLevelId());
+			pst.setLong(6, offer.getJobLanguageId());
+			pst.setLong(7, offer.getJobCategoryId());
+			System.out.println(offer);
+			pst.executeUpdate();
+			
+			
+			
+			
+		} catch (Exception e) {
+			con.rollback();
+			e.printStackTrace();
+		}finally {
+			con.setAutoCommit(true);
+		}
+	}
+	
+	public Long isValidOfferOwning(long id) throws SQLException, NotOfferFoundException  {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM `jobs-bg`.offers where offer_id = "+id+";");
+		if(!rs.next()) {
+			throw new NotOfferFoundException("Not offer with this id");
+		}
+		
+	
+		Long tempId = rs.getLong(10);
+		System.out.println("xxxxxxxxxxxx" + tempId);
+		return tempId;
 	}
 	
 	
