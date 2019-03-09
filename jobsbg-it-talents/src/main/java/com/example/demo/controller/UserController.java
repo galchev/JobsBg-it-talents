@@ -21,13 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import com.example.demo.dao.UserDAO;
+import com.example.demo.dto.ApplicationDTO;
 import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.RegistrationDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.AlreadyAppliedForThisOfferException;
+import com.example.demo.exceptions.ApplicationNotFoundException;
 import com.example.demo.exceptions.DeletedUserException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.exceptions.NotOfferFoundException;
+import com.example.demo.exceptions.NotUserException;
 import com.example.demo.interfaces.IRegistrationLogin;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -158,8 +163,32 @@ public class UserController implements IRegistrationLogin{
 	}
 	
 	
+	@PostMapping("/applyForOffer/{offerId}")
+	public void applyForOffer(@PathVariable long offerId,HttpServletRequest request, HttpServletResponse response) throws SQLException, NotOfferFoundException, AlreadyAppliedForThisOfferException, NotUserException {
+		HttpSession session = request.getSession();
+		if(!isLogged(session)) {
+			response.setStatus(401);
+			return;
+		}
+		
+		long id = (long) session.getAttribute("userId");
+		System.out.println("logged id " + id);
+		
+		userDao.applyForOffer(offerId, id);
+	}
 	
-	
-	
+	@DeleteMapping("/deleteApplication/{appId}")
+	public void deleteApplication0(@PathVariable long appId, HttpServletRequest request, HttpServletResponse response) throws SQLException, ApplicationNotFoundException, NotUserException {
+		HttpSession session = request.getSession();
+			
+		if(!isLogged(session)) {
+			response.setStatus(401);
+			return;
+		}
+			
+		long userId = (long) session.getAttribute("userId");
+			
+		userDao.deleteApplication(appId, userId);
+	}
 	
 }

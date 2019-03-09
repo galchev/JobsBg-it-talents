@@ -1,10 +1,12 @@
 package com.example.demo.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,14 +19,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.ApplicationDTO;
 import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.LoginDTO;
+import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.RegistrationDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.AlreadyAppliedForThisOfferException;
+import com.example.demo.exceptions.ApplicationNotFoundException;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.exceptions.NotOfferFoundException;
+import com.example.demo.exceptions.NotUserException;
 import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -142,6 +150,69 @@ public class UserDAO implements IStringToSha1{
 		con.createStatement().executeUpdate("update registrations set is_deleted = 1 where registration_id = "+id+";");
 		UserProfileDTO u = this.getUserById(id);
 		return u;
+	}
+	
+	public void applyForOffer(long offerId, long userId) throws SQLException, NotOfferFoundException, AlreadyAppliedForThisOfferException, NotUserException {
+		System.out.println("OFFER ID " + offerId);
+		System.out.println("UserId " + userId );
+		ResultSet rs3 = isUser(userId);
+		
+		if(!rs3.next()) {
+			throw new NotUserException("Method not allowed for companies");
+		}
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		OfferDTO offer = null;
+		ResultSet rs = con.createStatement().executeQuery("select * from `jobs-bg`.offers where offer_id = "+offerId+";");
+		while(rs.next()) {
+			System.out.println("while");
+			offer = new OfferDTO(rs.getLong(1), rs.getString(2), rs.getInt(3), 
+					rs.getDate(4), rs.getLong(5), rs.getLong(6), rs.getLong(7),
+					rs.getLong(8), rs.getLong(9), rs.getLong(10));
+		}
+	
+		if(offer == null) {
+			throw new NotOfferFoundException("Not offer with id " + offerId);
+		}
+		
+		Connection con1 = jdbcTemplate.getDataSource().getConnection();
+
+		ApplicationDTO app = new ApplicationDTO(0, Date.valueOf(LocalDate.now()), offerId, userId);
+		
+		Connection con2 = jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs1 = con2.createStatement().executeQuery("select * from applications where user_reg_id = "+userId+" and offer_id = "+offerId+";");
+		if(rs1.next()) {
+			throw new AlreadyAppliedForThisOfferException("Already applied for this offer");
+		}
+		
+		con1.createStatement().executeUpdate("insert into applications values(null, '"+Date.valueOf(LocalDate.now())+"', "+app.getOfferId()+", "+app.getUserId()+");", Statement.RETURN_GENERATED_KEYS);
+
+		
+	}
+
+
+	private ResultSet isUser(long userId) throws SQLException {
+		Connection con3 =jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs3 = con3.createStatement().executeQuery("select * from users where use_reg_id = "+userId+"");
+		return rs3;
+	}
+	
+	public void deleteApplication(long appId, long userId) throws SQLException, ApplicationNotFoundException, NotUserException {
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		
+		ResultSet rs = con.createStatement().executeQuery("select * from applications where application_id = "+appId+" and user_reg_id = "+userId+";");
+		
+		ResultSet rs3 = isUser(userId);
+		
+		if(!rs3.next()) {
+			throw new NotUserException("Method not allowed for companies");
+		}
+		
+		if(!rs.next()) {
+			throw new ApplicationNotFoundException("Not application found");
+		}
+		
+		Connection con1 = jdbcTemplate.getDataSource().getConnection();
+		con1.createStatement().executeUpdate("delete from applications where application_id = "+appId+" and user_reg_id = "+userId+";");
 	}
 	
 	public UserProfileDTO getUserProfile(long id) throws SQLException, NoSuchElementException {

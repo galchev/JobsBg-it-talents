@@ -25,6 +25,7 @@ import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.NotOfferFoundException;
+import com.example.demo.interfaces.IAdmin;
 import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Country;
 
@@ -212,6 +213,8 @@ public class CompanyDAO implements IStringToSha1{
 		System.out.println("xxxxxxxxxxxx" + tempId);
 		return tempId;
 	}
+
+
 	
 	
 	

@@ -10,17 +10,20 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.NoSuchElementException;
+import com.example.demo.interfaces.IAdmin;
 
 @Component
-public class AdminDAO {
+public class AdminDAO implements IAdmin{
 	
 	private JdbcTemplate jdbcTemplate;
 
 	public long deleteProfile(long id) throws SQLException, NoSuchElementException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		
-//		ResultSet rs = con.createStatement().executeQuery("select * from registrations where registration_id = "+id+";\r\n" + 
-//				"");
+		
+		Connection con1 = jdbcTemplate.getDataSource().getConnection();
+		String deleteUserFromApps = "delete from applications where user_reg_id = "+id+";";
+		deleteFromApplications(con1, deleteUserFromApps);
 		
 		con.createStatement().executeUpdate("update registrations set is_deleted = 1 where is_deleted = 0 and registration_id = "+id+";\r\n" + 
 				"");
@@ -33,7 +36,10 @@ public class AdminDAO {
 	
 	public long deleteOffer(long id) throws SQLException, NoSuchElementException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
-		
+		Connection con1 = jdbcTemplate.getDataSource().getConnection();
+		String deleteOfferFromApps = "delete from applications where offer_id = "+id+";";
+//		con1.createStatement().executeUpdate("delete from applications where offer_id = "+id+";");
+		deleteFromApplications(con1, deleteOfferFromApps);
 		int rowsAffected = con.createStatement().executeUpdate("delete from offers where offer_id = "+id+";\r\n" + 
 				"");
 		
@@ -41,7 +47,6 @@ public class AdminDAO {
 			throw new NoSuchElementException("Not offer found with id " + id);
 		}
 		
-		System.out.println("====" + id);
 		return id;
 	}
 	
@@ -64,5 +69,11 @@ public class AdminDAO {
 	@Autowired
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+
+	@Override
+	public void deleteFromApplications(Connection con, String query) throws SQLException {
+		con.createStatement().executeUpdate(query);
 	}
 }

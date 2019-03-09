@@ -33,13 +33,20 @@ public class OfferDTO {
 
 
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
+
+
+
 	@Override
 	public String toString() {
-		return "OfferDTO [date=" + date + "]";
+		return "OfferDTO [id=" + id + ", title=" + title + ", salary=" + salary + ", date=" + date + ", locationId="
+				+ locationId + ", jobTypeId=" + jobTypeId + ", jobLevelId=" + jobLevelId + ", jobLanguageId="
+				+ jobLanguageId + ", jobCategoryId=" + jobCategoryId + ", companyRegId=" + companyRegId + "]";
 	}
+
+
+
+
 
 
 
