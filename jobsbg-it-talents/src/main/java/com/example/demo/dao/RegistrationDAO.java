@@ -31,6 +31,7 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 
 	
 	
+	private static final String INSERT_INTO_REGISTRATIONS_QUERY= "insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)";
 	private static final String GET_ALL_REGISTRATIONS = "select * from registrations";
 	private JdbcTemplate jdbcTemplate;
 
@@ -59,7 +60,7 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 		
 		con.setAutoCommit(false);
 		try {
-			PreparedStatement pst = (PreparedStatement) con.prepareStatement("insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement pst = (PreparedStatement) con.prepareStatement(INSERT_INTO_REGISTRATIONS_QUERY,Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, user.getEmail());
 			String passwordToSha1 = IStringToSha1.stringToSha1(user.getPassword());
 			pst.setString(2, passwordToSha1);
@@ -107,8 +108,7 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try {
-			PreparedStatement pst = (PreparedStatement) con.prepareStatement("insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-			System.out.println("COMPANY EMAIL " + company.getEmail());
+			PreparedStatement pst = (PreparedStatement) con.prepareStatement(INSERT_INTO_REGISTRATIONS_QUERY,Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, company.getEmail());
 			String passwordToSha1 = IStringToSha1.stringToSha1(company.getPassword());
 			pst.setString(2,passwordToSha1 );
@@ -117,7 +117,6 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 
 			
 			isValidEmailAndPassword(company.getEmail(), passwordToSha1);
-			System.out.println(this.isAvailableEmail(company.getEmail()));
 			if(!this.isAvailableEmail(company.getEmail())) {
 				throw new InvalidEmailOrPasswordException("Email is not free");
 			}
@@ -131,7 +130,6 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 			usersPst.setLong(1, id);
 			usersPst.setString(2, company.getName());
 			usersPst.setString(3, company.getWebsite());
-			System.out.println("COMPANY website " + company.getWebsite());
 			if(!this.isValidBulstat(company.getBulstat())) {
 				throw new InvalidBulstatException("Invalid bulstat");
 			}
@@ -146,12 +144,10 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 		}
 		catch(Exception e) {
 			con.rollback();
-			System.out.println("EXCEPTIOOOOOON");
 			throw e;
 		}
 		
 		finally {
-			System.out.println("finally executed");
 			con.setAutoCommit(true);
 		}
 		return company.getCompanyId();	
@@ -163,7 +159,6 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 				.executeQuery("SELECT * FROM `jobs-bg`.registrations where email ='"+email+"';");
 		byte count = 0;
 		while(rs.next()) {
-			System.out.println("VLIZAM V NEXT");
 			count++;
 		}
 		if(count != 0) {

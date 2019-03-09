@@ -11,20 +11,27 @@ public class CompanyDTO {
 	private String name;
 	private String website;
 	private int bulstat;
+	
+	
+	public CompanyDTO(Long companyId, String name, String email, String website, int bulstat,
+			String passowrd, String phoneNumber, String pictureUrl) {
+		this.companyId = companyId;
+		this.name = name;
+		this.email = email;
+		this.website = website;
+		this.bulstat = bulstat;
+		this.password = passowrd;
+		this.phoneNumber = phoneNumber;
+		this.pictureUrl = pictureUrl;
+	}
+	
+	
+	
 	public String getPassword() {
 		return password;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "CompanyDTO [companyId=" + companyId + ", email=" + email + ", password=" + password + ", phoneNumber="
-				+ phoneNumber + ", pictureUrl=" + pictureUrl + ", isDeleted=" + isDeleted + ", name=" + name
-				+ ", website=" + website + ", bulstat=" + bulstat + "]";
-	}
-
+	
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -41,17 +48,7 @@ public class CompanyDTO {
 		return isDeleted;
 	}
 	
-	public CompanyDTO(Long companyId, String name, String email, String website, int bulstat,
-			String passowrd, String phoneNumber, String pictureUrl) {
-		this.companyId = companyId;
-		this.name = name;
-		this.email = email;
-		this.website = website;
-		this.bulstat = bulstat;
-		this.password = passowrd;
-		this.phoneNumber = phoneNumber;
-		this.pictureUrl = pictureUrl;
-	}
+	
 	
 	public int getBulstat() {
 		return bulstat;
@@ -68,5 +65,12 @@ public class CompanyDTO {
 	public String getWebsite() {
 		return website;
 	}
+	@Override
+	public String toString() {
+		return "CompanyDTO [companyId=" + companyId + ", email=" + email + ", password=" + password + ", phoneNumber="
+				+ phoneNumber + ", pictureUrl=" + pictureUrl + ", isDeleted=" + isDeleted + ", name=" + name
+				+ ", website=" + website + ", bulstat=" + bulstat + "]";
+	}
+
 	
 }

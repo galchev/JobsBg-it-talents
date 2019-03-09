@@ -40,21 +40,6 @@ public class UserDTO {
 
 
 
-//	public String getPhoneNumber() {
-//		return phoneNumber;
-//	}
-
-
-
-//	public boolean isDeleted() {
-//		return isDeleted;
-//	}
-
-
-
-//	public boolean isAdmin() {
-//		return isAdmin;
-//	}
 
 
 

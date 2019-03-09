@@ -28,28 +28,48 @@ public class RegistrationController {
 	@Autowired
 	private RegistrationDAO regDao;
 	
-	
+	/*
+	 * Get all registrations 
+	 */
 	@GetMapping("/registrations")
 	public List<Registration> getAllRegistrations(){
 		try {
 			return regDao.getAllRegistrations();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQL exception in /registrations method in Registration Controller");
 			return new LinkedList<>();
 		}
 	}
 	
+	/*
+	 * Register as User 
+	 */
+	
 	@PostMapping("/registrationsUser")
-	public long register(@RequestBody UserProfileDTO user) throws Exception {
+	public long register(@RequestBody UserProfileDTO user) {
 		
-		return this.regDao.registerUser(user);
+		try {
+			return this.regDao.registerUser(user);
+		} catch (Exception e) {
+			System.out.println("Exception in register user method in Registration controller");
+			return 0;
+		}
 		
 	}
 	
+	/*
+	 * Register as a Company
+	 */
+	
 	@PostMapping("/registrationsCompany")
-	public long register(@RequestBody CompanyProfileDTO company) throws Exception{
+	public long register(@RequestBody CompanyProfileDTO company){
 		
-		return this.regDao.registerCompany(company);
+		try {
+			return this.regDao.registerCompany(company);
+		} catch (Exception e) {
+			System.out.println("Exception in register company method in Registration controller");
+			return 0;
+		}
 		
 		
 	}

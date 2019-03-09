@@ -22,11 +22,12 @@ import com.example.demo.model.User;
 @RestController
 public class AdminController implements IRegistrationLogin{
 	
-//	@Autowired
-//	private UserDAO userDao;
+
 	@Autowired
 	private AdminDAO adminDao;
-	
+	/*
+	 * Deleting Registration by ID
+	 */
 	@DeleteMapping("/deleteRegistration/{id}")
 	public void deleteRegistration(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws NotAdminException, SQLException, NoSuchElementException{
 		
@@ -46,7 +47,9 @@ public class AdminController implements IRegistrationLogin{
 			
 			adminDao.deleteProfile(id);	
 	}
-	
+	/*
+	 * Deleting Offer by ID
+	 */
 	@DeleteMapping("/deleteOffer/{id}")
 	public void deleteOffer(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws NotAdminException, SQLException, NoSuchElementException{
 		

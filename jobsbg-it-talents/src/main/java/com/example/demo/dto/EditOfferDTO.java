@@ -54,6 +54,10 @@ public class EditOfferDTO {
 
 
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return "EditOfferDTO [id=" + id + ", title=" + title + ", salary=" + salary + ", locationId=" + locationId
@@ -62,8 +66,4 @@ public class EditOfferDTO {
 	}
 
 
-
-	public void setId(long id) {
-		this.id = id;
-	}
 }

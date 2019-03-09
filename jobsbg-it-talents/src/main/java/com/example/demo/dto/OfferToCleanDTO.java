@@ -15,12 +15,12 @@ public class OfferToCleanDTO {
 		return id;
 	}
 
+	
+	public Date getDate() {
+		return date;
+	}
 	@Override
 	public String toString() {
 		return "OfferToCleanDTO [id=" + id + ", date=" + date + "]";
-	}
-
-	public Date getDate() {
-		return date;
 	}
 }

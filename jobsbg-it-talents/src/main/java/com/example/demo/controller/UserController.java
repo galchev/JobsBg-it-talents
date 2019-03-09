@@ -43,21 +43,35 @@ public class UserController implements IRegistrationLogin{
 	private static final int SESSION_MAX_INACTIVE_SECONDS = 60;
 	@Autowired
 	private UserDAO userDao;
+
+	/*
+	 * Get All users 
+	 */
 	
 	@GetMapping("/users")
 	public List<UserDTO> getAllUsers(){
 		try {
 			return userDao.getAllUsers();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQL exception in getAllUsers Method");
 			return new LinkedList<UserDTO>();
 		}
 	}
+	/*
+	 * Get user by ID
+	 */
 	@GetMapping("/users/{userId}")
-	public UserProfileDTO getUserDetails(@PathVariable long userId) throws SQLException, NoSuchElementException {
-			return userDao.getUserById(userId);
+	public UserProfileDTO getUserDetails(@PathVariable long userId) throws NoSuchElementException {
+			try {
+				return userDao.getUserById(userId);
+			} catch (SQLException e) {
+				System.out.println("SQL Exception in getUserDetails method in User controller");
+				return null;
+			}
 	}
-	
+	/*
+	 * Login
+	 */
 	@PostMapping("/login")
 	public void login(@RequestBody LoginDTO user, HttpServletRequest request) throws NoSuchElementException, DeletedUserException {
 		try {
@@ -70,20 +84,37 @@ public class UserController implements IRegistrationLogin{
 			session.setAttribute("userId", u.getId());
 			session.setAttribute("user", u);
 		} catch (SQLException | NoSuchElementException e) {
-			e.printStackTrace();
+			System.out.println("Exception in login method in UserController");
+			return ;
 		} catch(NullPointerException e) {
-			System.out.println("not user found");
-			throw new NoSuchElementException("Not user found");
+			throw new NoSuchElementException("Invalid email or password");
 		}
 	}
-	
-	
+	/*
+	 * Get current logged user's applications
+	 */
+	@GetMapping("/applications")
+	public List<ApplicationDTO> getAllAplications(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		long id = (long) session.getAttribute("userId");
+		try {
+			 return userDao.getApplications(id);
+		} catch (SQLException e) {
+			System.out.println("SQL EXCEPTION in getAllAplications Method");
+			return new LinkedList<ApplicationDTO>();
+		}
+	}
+	/*
+	 * Logout
+	 */
 	@PostMapping("/logout")
 	public void logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.invalidate();
 	}
-	
+	/*
+	 * Delete current logged user's profile
+	 */
 	@DeleteMapping("/deleteProfile")
 	public UserProfileDTO deleteProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
 		try {
@@ -98,18 +129,19 @@ public class UserController implements IRegistrationLogin{
 			logout(request);
 			return userDao.deleteProfile(id);
 		}catch (SQLException e) {
-			System.out.println("aaaaaaaaaaa");
-			e.printStackTrace();
+			System.out.println("SQL EXCEPTION in delete profile  Method");
 			return null;
 		} catch (NoSuchElementException e) {
-			System.out.println("dsadsadas");
-			e.printStackTrace();
+			System.out.println("No Such Element ");
 			return null;
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		}
 	}
-
+	
+	/*
+	 * Edit current logged user's profile (request JSON body from Postman)
+	 */
 	
 	@PutMapping("/editUserProfile")
 	public void editProfile(@RequestBody EditUserProfileDTO user, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException  {
@@ -128,14 +160,16 @@ public class UserController implements IRegistrationLogin{
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("SQL EXCEPTION in edit profile  Method");
+			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("EXCEPTION in delete profile  Method");
+			return;
 		}
 	}
-	
+	/*
+	 * Get current logged user's profile details
+	 */
 	@GetMapping("/profile")
 	public UserProfileDTO getProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
 	
@@ -150,33 +184,31 @@ public class UserController implements IRegistrationLogin{
 			long id = (long) session.getAttribute("userId");
 			return userDao.getUserProfile(id);
 		} catch (SQLException e) {
-			System.out.println("aaaaaaaaaaa");
-			e.printStackTrace();
 			return null;
 		} catch (NoSuchElementException e) {
-			System.out.println("dsadsadas");
-			e.printStackTrace();
 			return null;
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		}
 	}
-	
-	
+
+	/*
+	 * Current logged user applies for offer by offer id
+	 */
 	@PostMapping("/applyForOffer/{offerId}")
-	public void applyForOffer(@PathVariable long offerId,HttpServletRequest request, HttpServletResponse response) throws SQLException, NotOfferFoundException, AlreadyAppliedForThisOfferException, NotUserException {
+	public void applyForOffer(@PathVariable long offerId, HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, NotOfferFoundException, AlreadyAppliedForThisOfferException, NotUserException {
 		HttpSession session = request.getSession();
-		if(!isLogged(session)) {
+		if (!isLogged(session)) {
 			response.setStatus(401);
 			return;
 		}
-		
 		long id = (long) session.getAttribute("userId");
-		System.out.println("logged id " + id);
-		
 		userDao.applyForOffer(offerId, id);
 	}
-	
+	/*
+	 * Delete application
+	 */
 	@DeleteMapping("/deleteApplication/{appId}")
 	public void deleteApplication0(@PathVariable long appId, HttpServletRequest request, HttpServletResponse response) throws SQLException, ApplicationNotFoundException, NotUserException {
 		HttpSession session = request.getSession();
