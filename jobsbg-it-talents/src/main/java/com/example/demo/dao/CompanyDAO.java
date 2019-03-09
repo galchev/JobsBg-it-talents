@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.ApplicationDTO;
 import com.example.demo.dto.CompanyDTO;
 import com.example.demo.dto.CompanyProfileDTO;
 import com.example.demo.dto.EditOfferDTO;
@@ -25,7 +26,9 @@ import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.NotOfferFoundException;
+import com.example.demo.exceptions.UnauthorizedException;
 import com.example.demo.interfaces.IAdmin;
+import com.example.demo.interfaces.IRegistrationLogin;
 import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Country;
 
@@ -39,7 +42,7 @@ public class CompanyDAO implements IStringToSha1{
 	private static final int PHONE_NUMBER_SYMBOLS_COUNT = 10;
 	private static final String PHONE_NUMBER_PREFIX = "08";
 	
-	private static final String GET_ALL_COMPANIES = "select c.company_reg_id, c.name, c.website, c.bulstat, r.email, r.password, r.phone_number, r.picture_url\r\n" + 
+	private static final String GET_ALL_COMPANIES = "select c.company_reg_id, c.name, c.website, c.bulstat, r.email, r.password, r.phone_number, r.picture_url,r.is_deleted\r\n" + 
 			"from companies c \r\n" + 
 			"left join registrations r on(c.company_reg_id = r.registration_id)";
 	private static final byte COMPANIES_WITH_SAME_ID_COUNT = 1;
@@ -58,7 +61,7 @@ public class CompanyDAO implements IStringToSha1{
 
 			CompanyDTO c = new CompanyDTO(rs.getLong(1), rs.getString(2),
 					rs.getString(5), rs.getString(3), rs.getInt(4), 
-					rs.getString(6), rs.getString(7), rs.getString(8));
+					rs.getString(6), rs.getString(7), rs.getString(8),rs.getBoolean(9));
 			companies.add(c);
 		}		
 		
@@ -131,7 +134,7 @@ public class CompanyDAO implements IStringToSha1{
 	
 	private void isValidPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
 		if(!(phoneNumber.startsWith(PHONE_NUMBER_PREFIX) &&
-				phoneNumber.length() == PHONE_NUMBER_SYMBOLS_COUNT)) {
+				phoneNumber.length() != PHONE_NUMBER_SYMBOLS_COUNT)) {
 			throw new InvalidPhoneNumberException("Invalid phone number");
 		}
 	}
@@ -213,7 +216,6 @@ public class CompanyDAO implements IStringToSha1{
 
 
 	public void deleteOffer(Long offerId) {
-		System.out.println("ID NA OFERTATA " +  offerId);
 		Connection con = null;
 		int rowsDeleted = 0;
 		try {
@@ -227,7 +229,26 @@ public class CompanyDAO implements IStringToSha1{
 			System.out.println("SQL exception in deleteOffer CompanyDAO");
 		}
 	}
+
+	public List<OfferDTO> getCompanyOffers(long companyId) throws SQLException, UnauthorizedException{
+		ResultSet rs1 = isCompany(companyId);
+		if(!rs1.next()) {
+			throw new UnauthorizedException("Not allowed");
+		}
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs = con.createStatement().executeQuery("select * from offers where company_reg_id = "+companyId+";");
+		List<OfferDTO> offersToReturn = new LinkedList<>();
+		while(rs.next()) {
+			offersToReturn.add(new OfferDTO(rs.getLong(1), rs.getString(2), rs.getInt(3), rs.getDate(4), rs.getLong(5),  rs.getLong(6),  rs.getLong(7),  rs.getLong(8),  rs.getLong(9), rs.getLong(10)));
+		}
+		return offersToReturn;
+	}
 	
+	private ResultSet isCompany(long companyId) throws SQLException {
+		Connection con3 =jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs3 = con3.createStatement().executeQuery("select * from companies where company_reg_id = "+companyId+"");
+		return rs3;
+	}
 	
 	
 }

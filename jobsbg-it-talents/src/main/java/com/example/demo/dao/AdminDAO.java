@@ -53,14 +53,11 @@ public class AdminDAO implements IAdmin{
 	public boolean isAdmin(long id) throws SQLException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		
-		ResultSet rs = con.createStatement().executeQuery("select count(*) from registrations r\r\n" + 
+		ResultSet rs = con.createStatement().executeQuery("select * from registrations r\r\n" + 
 				"left join users u on(r.registration_id = u.use_reg_id)\r\n" + 
 				"where u.is_admin = 1 and r.registration_id = "+id+";");
-		int count = 0;
-		while(rs.next()) {
-			count++;
-		}
-		return count > 0 ? true : false;
+
+		return rs.next() ? true : false;
 	}
 	
 	

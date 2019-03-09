@@ -39,6 +39,7 @@ public class CompanyController implements IRegistrationLogin{
 	/*
 	 * Add offer only if you are logged as company
 	 */
+	
 	@PostMapping("/companyProfile/addOffer")
 	public long addOffer(@RequestBody OfferDTO offer,HttpServletRequest request, HttpServletResponse response) {
 		
@@ -48,9 +49,11 @@ public class CompanyController implements IRegistrationLogin{
 			long id = (long) session.getAttribute("userId");
 			CompanyProfileDTO companyCheck = companyDao.getCompanyById(id);
 			int bulstat = 0;
-			bulstat = companyCheck.getBulstat();
 			
-			if(!isLogged(session) || bulstat<0 ) {
+			bulstat = companyCheck.getBulstat();
+			System.out.println("BULSTAT" + bulstat);
+			
+			if(!isLogged(session) || bulstat==0 ) {
 				response.setStatus(401);
 				throw new UnauthorizedException("Unauthorized");
 			}
@@ -75,7 +78,7 @@ public class CompanyController implements IRegistrationLogin{
 			}
 			
 			if(!companyDao.isValidOfferOwning(offerId).equals(session.getAttribute("userId"))) {
-				throw new InvalidOfferOwnerException("This offer can not be edited");
+				throw new InvalidOfferOwnerException("Offer edition is unabled");
 			}
 			companyDao.editOffer(offer,offerId);
 			
@@ -112,21 +115,23 @@ public class CompanyController implements IRegistrationLogin{
 	public CompanyProfileDTO getCompanyProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
 		try {
 			HttpSession session = request.getSession();
-			if(!isLogged(session)) {
-				response.setStatus(401);
-				return null;
-			}
 			long id = (long) session.getAttribute("userId");
+			CompanyProfileDTO companyCheck = companyDao.getCompanyById(id);
+			int bulstat = 0;
+			bulstat = companyCheck.getBulstat();
+		
+			if(!isLogged(session) || bulstat==0) {
+				response.setStatus(401);
+				throw new NoSuchElementException("Not allowed");
+			}
+			//long id = (long) session.getAttribute("userId");
 			System.out.println(id);
 			return companyDao.getCompanyProfile(id);
 		}
 		catch (SQLException e) {
 			System.out.println("SQL exception in getCompanyProfile in CompanyController");
 			return null;
-		} catch (NoSuchElementException e) {
-			System.out.println("NoSuchElement exception in getCompanyProfile in CompanyController");
-			return null;
-		} catch(NullPointerException e) {
+		}  catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		}
 	}
@@ -170,7 +175,7 @@ public class CompanyController implements IRegistrationLogin{
 			}
 			
 			if(!companyDao.isValidOfferOwning(offerId).equals(session.getAttribute("userId"))) {
-				throw new InvalidOfferOwnerException("This offer can not be deleted");
+				throw new InvalidOfferOwnerException("Offer edition is unabled");
 				
 			}
 			companyDao.deleteOffer(offerId);
@@ -182,6 +187,17 @@ public class CompanyController implements IRegistrationLogin{
 		} catch (NotOfferFoundException e) {
 			throw new NotOfferFoundException("Not offer with this id");
 		}
+	}
+	
+	@GetMapping("/companyProfile/offers")
+	public List<OfferDTO> getCompanyOffers(HttpServletRequest request) throws SQLException, UnauthorizedException{
+
+		HttpSession session = request.getSession();
+		long id = (long) session.getAttribute("userId");
+		if(!isLogged(session)) {
+			throw new UnauthorizedException("Not allowed");
+		}
+		return companyDao.getCompanyOffers(id);
 	}
 	
 	

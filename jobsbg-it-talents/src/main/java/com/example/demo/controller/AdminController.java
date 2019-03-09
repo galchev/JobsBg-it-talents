@@ -31,7 +31,6 @@ public class AdminController implements IRegistrationLogin{
 	@DeleteMapping("/deleteRegistration/{id}")
 	public void deleteRegistration(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws NotAdminException, SQLException, NoSuchElementException{
 		
-			System.out.println("id" + id);
 			HttpSession session = request.getSession();
 			
 			if(!isLogged(session)) {
@@ -39,7 +38,6 @@ public class AdminController implements IRegistrationLogin{
 				return;
 			} else {
 				long currentUserId = (long) session.getAttribute("userId");
-				System.out.println(currentUserId + "-------");
 					if(!adminDao.isAdmin(currentUserId)) {
 						throw new NotAdminException("Not authorize to delete profiles");
 					}

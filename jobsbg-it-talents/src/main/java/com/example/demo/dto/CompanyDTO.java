@@ -14,7 +14,7 @@ public class CompanyDTO {
 	
 	
 	public CompanyDTO(Long companyId, String name, String email, String website, int bulstat,
-			String passowrd, String phoneNumber, String pictureUrl) {
+			String passowrd, String phoneNumber, String pictureUrl,boolean isDeleted) {
 		this.companyId = companyId;
 		this.name = name;
 		this.email = email;
@@ -23,6 +23,7 @@ public class CompanyDTO {
 		this.password = passowrd;
 		this.phoneNumber = phoneNumber;
 		this.pictureUrl = pictureUrl;
+		this.isDeleted = isDeleted;
 	}
 	
 	

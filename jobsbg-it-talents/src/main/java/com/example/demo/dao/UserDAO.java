@@ -33,6 +33,7 @@ import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.NotOfferFoundException;
 import com.example.demo.exceptions.NotUserException;
+import com.example.demo.exceptions.UnauthorizedException;
 import com.example.demo.interfaces.IStringToSha1;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -107,7 +108,7 @@ public class UserDAO implements IStringToSha1{
 	}
 	
 	
-	public void editProfileUser(long id, EditUserProfileDTO u) throws SQLException  {
+	public void editProfileUser(long id, EditUserProfileDTO u) throws SQLException, InvalidNameException, InvalidPhoneNumberException  {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
 		try {
@@ -128,7 +129,7 @@ public class UserDAO implements IStringToSha1{
 			isValidName(u.getFirstName(), regex);
 			isValidName(u.getFirstName(), regex);
 			pst1.executeUpdate();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			con.rollback();
 			e.printStackTrace();
 		}finally {
@@ -213,7 +214,11 @@ public class UserDAO implements IStringToSha1{
 		}
 		return applicationsToReturn;
 	}
-	public UserProfileDTO getUserProfile(long id) throws SQLException, NoSuchElementException {
+	public UserProfileDTO getUserProfile(long id) throws SQLException, NoSuchElementException, UnauthorizedException {
+		ResultSet rs = isUser(id);
+		if(!rs.next()) {
+			throw new UnauthorizedException("Not allowed");
+		}
 		return this.getUserById(id);
 	}
 	

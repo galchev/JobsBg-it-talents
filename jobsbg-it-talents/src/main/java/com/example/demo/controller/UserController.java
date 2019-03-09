@@ -28,11 +28,15 @@ import com.example.demo.dto.RegistrationDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.AlreadyAppliedForThisOfferException;
+import com.example.demo.exceptions.AlreadyLoggedException;
 import com.example.demo.exceptions.ApplicationNotFoundException;
 import com.example.demo.exceptions.DeletedUserException;
+import com.example.demo.exceptions.InvalidNameException;
+import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.NotOfferFoundException;
 import com.example.demo.exceptions.NotUserException;
+import com.example.demo.exceptions.UnauthorizedException;
 import com.example.demo.interfaces.IRegistrationLogin;
 import com.example.demo.model.Registration;
 import com.example.demo.model.User;
@@ -73,13 +77,18 @@ public class UserController implements IRegistrationLogin{
 	 * Login
 	 */
 	@PostMapping("/login")
-	public void login(@RequestBody LoginDTO user, HttpServletRequest request) throws NoSuchElementException, DeletedUserException {
+	public void login(@RequestBody LoginDTO user, HttpServletRequest request) throws NoSuchElementException, DeletedUserException, AlreadyLoggedException {
+		HttpSession session = request.getSession();
+		if(isLogged(session)) {
+			throw new AlreadyLoggedException("You are already logged ");
+		}
+		
 		try {
 			RegistrationDTO u = userDao.login(user);
 			if(u.isDeleted()) {
 				throw new DeletedUserException("This user was deleted");
 			}
-			HttpSession session = request.getSession();
+			
 			session.setMaxInactiveInterval(SESSION_MAX_INACTIVE_SECONDS);
 			session.setAttribute("userId", u.getId());
 			session.setAttribute("user", u);
@@ -144,7 +153,7 @@ public class UserController implements IRegistrationLogin{
 	 */
 	
 	@PutMapping("/editUserProfile")
-	public void editProfile(@RequestBody EditUserProfileDTO user, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException  {
+	public void editProfile(@RequestBody EditUserProfileDTO user, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, InvalidNameException, InvalidPhoneNumberException  {
 		try {
 			HttpSession session = request.getSession();
 			
@@ -162,17 +171,14 @@ public class UserController implements IRegistrationLogin{
 		} catch (SQLException e) {
 			System.out.println("SQL EXCEPTION in edit profile  Method");
 			return;
-		} catch (Exception e) {
-			System.out.println("EXCEPTION in delete profile  Method");
-			return;
 		}
 	}
 	/*
 	 * Get current logged user's profile details
 	 */
 	@GetMapping("/profile")
-	public UserProfileDTO getProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
-	
+	public UserProfileDTO getProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, UnauthorizedException {
+		
 		try {
 			HttpSession session = request.getSession();
 			
