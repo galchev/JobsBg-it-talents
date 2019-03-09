@@ -40,7 +40,7 @@ public class OfferDAO {
 	private List<JobLevel> levels = new LinkedList<>();
 	private List<JobType> types = new LinkedList<>();
 	
-	
+	private JdbcTemplate jdbc = new JdbcTemplate();
 	
 	//get all offers
 	public List<SortedOfferDTO> getAllOffers(String sortBy,Long cityId,Long countryId,Long jobCategoryId,Long jobTypeId,Long jobLevelId,Long jobLanguageId,String keyword,Long companyId) throws SQLException{
@@ -49,7 +49,8 @@ public class OfferDAO {
 				.executeQuery(SELECT_ALL_OFFERS_QUERRY + ";");
 		
 		List<SortedOfferDTO> offers = new LinkedList<>();
-
+	
+		
 		while(rs.next()) {
 			
 			long tempCityId  = 0;

@@ -1,6 +1,7 @@
 package com.example.demo.daemons;
 
 import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -44,11 +45,12 @@ public class OldOfferCleaner implements Runnable{
 	
 	public OldOfferCleaner() throws SQLException, ClassNotFoundException{
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.
-				getConnection("jdbc:mysql://localhost:3306/jobs-bg", "root", "root-root1");
-		statement = con.createStatement();
-		statement1 = con.createStatement();
-		statement2 = con.createStatement();
+//		Connection con = DriverManager.
+//				getConnection("jdbc:mysql://localhost:3306/jobs-bg", "root", "root-root1");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/jobs-bg?user=root&password=root-root1&useLegacyDatetimeCode=false&serverTimezone=EET");
+		statement = conn.createStatement();
+		statement1 = conn.createStatement();
+		statement2 = conn.createStatement();
 	}
 
 	@Override
