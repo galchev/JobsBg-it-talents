@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +57,7 @@ public class CompanyController implements IRegistrationLogin{
 			e.printStackTrace();
 			System.out.println("dasdasdasdasd");
 			response.setStatus(401);
-			return -1;
+			return 0;
 		}
 	}
 	@PutMapping("/companyProfile/editOffer/{offerId}")
@@ -72,7 +73,6 @@ public class CompanyController implements IRegistrationLogin{
 			if(!companyDao.isValidOfferOwning(offerId).equals(session.getAttribute("userId"))) {
 				throw new InvalidOfferOwnerException("This offer can not be edited");
 			}
-			System.out.println("OFFER ID" + offer.getId());
 			companyDao.editOffer(offer,offerId);
 			
 			
@@ -136,12 +136,38 @@ public class CompanyController implements IRegistrationLogin{
 			
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return;
 		}
 	}
+	
+	@DeleteMapping("/companyProfile/deleteOffer/{offerId}")
+	public void deleteOffer(@PathVariable Long offerId, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException {
+		try {
+			HttpSession session = request.getSession();
+			
+			if(!isLogged(session)) {
+				response.setStatus(401);
+				return;
+			}
+			
+			if(!companyDao.isValidOfferOwning(offerId).equals(session.getAttribute("userId"))) {
+				throw new InvalidOfferOwnerException("This offer can not be deleted");
+				
+			}
+			companyDao.deleteOffer(offerId);
+			
+			
+			
+			
+		} catch(NullPointerException e) {
+			throw new NoSuchElementException("Session expired");
+		} catch (NotOfferFoundException e) {
+			throw new NotOfferFoundException("Not offer with this id");
+		}
+	}
+	
+	
+	
 }

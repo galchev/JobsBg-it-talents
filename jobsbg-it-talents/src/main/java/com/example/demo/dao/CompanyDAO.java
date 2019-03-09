@@ -32,6 +32,9 @@ import com.example.demo.model.Country;
 public class CompanyDAO implements IStringToSha1{
 	
 	
+	private static final String UPDATE_OFFERS_QUERY_PREPARED_STATEMENT_WHERE_ID = "update `jobs-bg`.offers set title = ?, salary = ?, location_id = ?, job_type_id = ?, job_level_id = ?, job_language_id = ?, job_category_id = ?  where offer_id = ";
+	private static final String SELECT_OFFERS_QUERY_WHERE_OFFER_ID = "SELECT * FROM `jobs-bg`.offers where offer_id = ";
+	private static final String DELETE_OFFERS_QUERY_WHERE_OFFER_ID = "delete from `jobs-bg`.offers where offer_id = ";
 	private static final int PHONE_NUMBER_SYMBOLS_COUNT = 10;
 	private static final String PHONE_NUMBER_PREFIX = "08";
 	
@@ -177,7 +180,7 @@ public class CompanyDAO implements IStringToSha1{
 		
 		try {
 			PreparedStatement pst = con.prepareStatement
-					("update `jobs-bg`.offers set title = ?, salary = ?, location_id = ?, job_type_id = ?, job_level_id = ?, job_language_id = ?, job_category_id = ?  where offer_id = "+id+";");
+					(UPDATE_OFFERS_QUERY_PREPARED_STATEMENT_WHERE_ID+id+";");
 			offer.setId(id);
 			pst.setString(1, offer.getTitle());
 			pst.setInt(2, offer.getSalary());
@@ -202,15 +205,30 @@ public class CompanyDAO implements IStringToSha1{
 	
 	public Long isValidOfferOwning(long id) throws SQLException, NotOfferFoundException  {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
-		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM `jobs-bg`.offers where offer_id = "+id+";");
+		ResultSet rs = con.createStatement().executeQuery(SELECT_OFFERS_QUERY_WHERE_OFFER_ID+id+";");
 		if(!rs.next()) {
 			throw new NotOfferFoundException("Not offer with this id");
 		}
 		
-	
+	  
 		Long tempId = rs.getLong(10);
-		System.out.println("xxxxxxxxxxxx" + tempId);
 		return tempId;
+	}
+
+	public void deleteOffer(Long offerId) {
+		System.out.println("ID NA OFERTATA " +  offerId);
+		Connection con = null;
+		int rowsDeleted = 0;
+		try {
+			con = jdbcTemplate.getDataSource().getConnection();
+		} catch (SQLException e1) {
+			System.out.println("SQL exception in deleteOffer CompanyDAO");
+		}
+		try {
+			rowsDeleted = con.createStatement().executeUpdate(DELETE_OFFERS_QUERY_WHERE_OFFER_ID+offerId+";");
+		} catch (SQLException e) {
+			System.out.println("SQL exception in deleteOffer CompanyDAO");
+		}
 	}
 	
 	
