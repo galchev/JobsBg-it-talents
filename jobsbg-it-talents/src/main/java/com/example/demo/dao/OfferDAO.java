@@ -31,30 +31,6 @@ public class OfferDAO {
 			+ "left join cities c on (l.city_id = c.city_id)\r\n"
 			+ "left join countries n on (c.country_id = n.country_id)";
 	private JdbcTemplate jdbcTemplate;
-	private List<City> cities = new LinkedList<>();
-	private List<Country> countries = new LinkedList<>();
-	private List<Location> locations = new LinkedList<>();
-	private List<JobCategory> categories = new LinkedList<>();
-	private List<JobLanguage> languages = new LinkedList<>();
-	private List<JobLevel> levels = new LinkedList<>();
-	private List<JobType> types = new LinkedList<>();
-//<<<<<<< HEAD
-//	
-//	private JdbcTemplate jdbc = new JdbcTemplate();
-//	
-//	//get all offers
-//	public List<SortedOfferDTO> getAllOffers(String sortBy,Long cityId,Long countryId,Long jobCategoryId,Long jobTypeId,Long jobLevelId,Long jobLanguageId,String keyword,Long companyId) throws SQLException{
-//		Connection con = jdbcTemplate.getDataSource().getConnection();		
-//		ResultSet rs = con.createStatement()
-//				.executeQuery(SELECT_ALL_OFFERS_QUERRY + ";");
-//		
-//		List<SortedOfferDTO> offers = new LinkedList<>();
-//	
-//		
-//		while(rs.next()) {
-//			
-//			long tempCityId  = 0;
-//=======
 
 	// get all offers
 	public List<SortedOfferDTO> getAllOffers(String sortBy, Long cityId, Long countryId, Long jobCategoryId,
@@ -67,7 +43,6 @@ public class OfferDAO {
 		while (rs.next()) {
 
 			long tempCityId = 0;
-//>>>>>>> f105d70c00a6ba8a78317cc8a710c7a00261d031
 			long tempCountryId = 0;
 			ResultSet rs1 = con.createStatement()
 					.executeQuery(SELECT_CITY_ID_WHERE_OFFER_ID + " where o.offer_id = " + rs.getLong(1) + ";");
