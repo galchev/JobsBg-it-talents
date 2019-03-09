@@ -17,9 +17,15 @@ import com.example.demo.dto.UserDTO;
 @RestController
 public class OfferController {
 	
-	private List<OfferDTO> offerContainer = new LinkedList<>();
 	@Autowired
 	private OfferDAO offerDao;
+	/*
+	 * Get offers by criterias (if user wants to enter criteria)
+	 * criterias - cityId,countryId,jobCategoryId,jobTypeId,jobLevelId,jobLanguageId,keyword,companyId
+	 * sortBy - offerTitle, salaryAsc, salaryDsc, newest, oldest
+	 * Get offers sorted by a criteria (only if user wants to see the offers sorted)
+	 */
+	
 	@GetMapping("/offers")
 	public List<SortedOfferDTO> getAllOffers(@RequestParam(name="sortBy",required = false) String sortBy,
 			@RequestParam(name="cityId",required = false) Long cityId,
@@ -36,13 +42,5 @@ public class OfferController {
 			return new LinkedList<SortedOfferDTO>();
 		}
 	}
-	//za vremenno vytreshno polzvane
-//	public void getOffersInList() throws SQLException {
-//		this.offerContainer.addAll(offerDao.getAllOffers());
-//		System.out.println(this.offerContainer.size());
-//	}
-//	public List<OfferDTO> getOfferContainer() {
-//		return offerContainer;
-//	}
 	
 }

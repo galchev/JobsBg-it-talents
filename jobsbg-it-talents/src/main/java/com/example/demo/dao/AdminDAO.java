@@ -38,7 +38,6 @@ public class AdminDAO implements IAdmin{
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		Connection con1 = jdbcTemplate.getDataSource().getConnection();
 		String deleteOfferFromApps = "delete from applications where offer_id = "+id+";";
-//		con1.createStatement().executeUpdate("delete from applications where offer_id = "+id+";");
 		deleteFromApplications(con1, deleteOfferFromApps);
 		int rowsAffected = con.createStatement().executeUpdate("delete from offers where offer_id = "+id+";\r\n" + 
 				"");

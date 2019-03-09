@@ -150,9 +150,6 @@ public class CompanyDAO implements IStringToSha1{
 		offer.setDate(Date.valueOf(LocalDate.now()));
 			pst.setString(1, offer.getTitle());
 			pst.setInt(2, offer.getSalary());
-//			pst.setDate(3, offer.getDate());
-//			pst.setDate(4, Date.valueOf(LocalDate.now()));
-//			offer.setDate(Date.valueOf(LocalDate.now()));
 			pst.setDate(3, offer.getDate());
 			pst.setLong(4, offer.getLocationId());
 			pst.setLong(5, offer.getJobTypeId());
@@ -160,7 +157,6 @@ public class CompanyDAO implements IStringToSha1{
 			pst.setLong(7, offer.getJobLanguageId());
 			pst.setLong(8, offer.getJobCategoryId());
 			pst.setLong(9, id);
-//			offer.setCompanyRegId(id);
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -190,7 +186,6 @@ public class CompanyDAO implements IStringToSha1{
 			pst.setLong(5, offer.getJobLevelId());
 			pst.setLong(6, offer.getJobLanguageId());
 			pst.setLong(7, offer.getJobCategoryId());
-			System.out.println(offer);
 			pst.executeUpdate();
 			
 			

@@ -23,12 +23,6 @@ public class ApplicationDTO {
 		this.userId = userId;
 	}
 	
-//	public ApplicationDTO(long offerId, long userId) {
-//	super();
-//	this.offerId = offerId;
-//	this.userId = userId;
-//}
-
 	public void setApplicationId(long applicationId) {
 		this.applicationId = applicationId;
 	}
@@ -48,6 +42,13 @@ public class ApplicationDTO {
 	}
 	public long getUserId() {
 		return userId;
+	}
+
+
+	@Override
+	public String toString() {
+		return "ApplicationDTO [applicationId=" + applicationId + ", date=" + date + ", offerId=" + offerId
+				+ ", userId=" + userId + "]";
 	}
 
 }

@@ -31,25 +31,6 @@ public class OfferDTO {
 		this.companyRegId = companyRegId;
 	}
 
-
-
-
-
-
-
-	@Override
-	public String toString() {
-		return "OfferDTO [id=" + id + ", title=" + title + ", salary=" + salary + ", date=" + date + ", locationId="
-				+ locationId + ", jobTypeId=" + jobTypeId + ", jobLevelId=" + jobLevelId + ", jobLanguageId="
-				+ jobLanguageId + ", jobCategoryId=" + jobCategoryId + ", companyRegId=" + companyRegId + "]";
-	}
-
-
-
-
-
-
-
 	public void setCompanyRegId(long companyRegId) {
 		this.companyRegId = companyRegId;
 	}
@@ -97,4 +78,15 @@ public class OfferDTO {
 	public Long getCompanyRegId() {
 		return companyRegId;
 	}
+	
+
+	@Override
+	public String toString() {
+		return "OfferDTO [id=" + id + ", title=" + title + ", salary=" + salary + ", date=" + date + ", locationId="
+				+ locationId + ", jobTypeId=" + jobTypeId + ", jobLevelId=" + jobLevelId + ", jobLanguageId="
+				+ jobLanguageId + ", jobCategoryId=" + jobCategoryId + ", companyRegId=" + companyRegId + "]";
+	}
+
+
+
 }

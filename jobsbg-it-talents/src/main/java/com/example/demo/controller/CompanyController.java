@@ -36,7 +36,9 @@ public class CompanyController implements IRegistrationLogin{
 
 	@Autowired
 	private CompanyDAO companyDao;
-	
+	/*
+	 * Add offer only if you are logged as company
+	 */
 	@PostMapping("/companyProfile/addOffer")
 	public long addOffer(@RequestBody OfferDTO offer,HttpServletRequest request, HttpServletResponse response) {
 		
@@ -54,12 +56,14 @@ public class CompanyController implements IRegistrationLogin{
 			}
 			return this.companyDao.addNewOffer(offer,id);
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("dasdasdasdasd");
+			System.out.println("Exception in CompanyController addOffer method");
 			response.setStatus(401);
 			return 0;
 		}
 	}
+	/*
+	 * Edit offer by offer ID from Postman (only if you are logged as company)
+	 */
 	@PutMapping("/companyProfile/editOffer/{offerId}")
 	public void editOffer(@PathVariable Long offerId, @RequestBody EditOfferDTO offer, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException {
 		try {
@@ -76,14 +80,15 @@ public class CompanyController implements IRegistrationLogin{
 			companyDao.editOffer(offer,offerId);
 			
 			
-			
-			
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		} catch (NotOfferFoundException e) {
 			throw new NotOfferFoundException("Not offer with this id");
 		}
 	}
+	/*
+	 * Get all companies in jobsBg
+	 */
 	@GetMapping("/companies")
 	public List<CompanyDTO> getAllCompanies(){
 		try {
@@ -93,10 +98,16 @@ public class CompanyController implements IRegistrationLogin{
 			return new LinkedList<>();
 		}
 	}
+	/*
+	 * Get company by ID
+	 */
 	@GetMapping("/companies/{companyId}")
 	public CompanyProfileDTO getCompanyDetails(@PathVariable long companyId) throws SQLException, NoSuchElementException {
 			return companyDao.getCompanyById(companyId);
 	}
+	/*
+	 * Get current logged company's profile details
+	 */
 	@GetMapping("/companyProfile")
 	public CompanyProfileDTO getCompanyProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
 		try {
@@ -110,16 +121,19 @@ public class CompanyController implements IRegistrationLogin{
 			return companyDao.getCompanyProfile(id);
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQL exception in getCompanyProfile in CompanyController");
 			return null;
 		} catch (NoSuchElementException e) {
-			e.printStackTrace();
+			System.out.println("NoSuchElement exception in getCompanyProfile in CompanyController");
 			return null;
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		}
 	}
 	
+	/*
+	 * Editing your company profile (only if you are logged as this company)
+	 */
 	
 	@PutMapping("/editCompanyProfile")
 	public void editProfile(@RequestBody EditProfileCompanyDTO company, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException  {
@@ -138,11 +152,13 @@ public class CompanyController implements IRegistrationLogin{
 		} catch(NullPointerException e) {
 			throw new NoSuchElementException("Session expired");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.out.println("Exception in editProfile method in CompanyController");
 			return;
 		}
 	}
-	
+	/*
+	 * Delete offer by id (only if you are logged as a company and you have an offer with this id
+	 */
 	@DeleteMapping("/companyProfile/deleteOffer/{offerId}")
 	public void deleteOffer(@PathVariable Long offerId, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException {
 		try {
@@ -158,7 +174,6 @@ public class CompanyController implements IRegistrationLogin{
 				
 			}
 			companyDao.deleteOffer(offerId);
-			
 			
 			
 			

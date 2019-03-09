@@ -79,9 +79,6 @@ public class UserDAO implements IStringToSha1{
 			userToReturn = new UserProfileDTO(rs.getLong(1), rs.getString(2),
 					rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6), rs.getBoolean(7), rs.getBoolean(8), rs.getString(9));
-//		userToReturn = new UserProfileDTO(rs.getLong(1), rs.getString(2),
-//				rs.getString(3), rs.getString(4),rs.getString(5),
-//				rs.getString(6), rs.getBoolean(7), rs.getBoolean(8), rs.getString(9));
 		}
 			if(usersCount == USERS_WITH_SAME_ID_COUNT) {
 				return userToReturn;
@@ -105,9 +102,6 @@ public class UserDAO implements IStringToSha1{
 			userToReturn = new RegistrationDTO(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
 		}
 		
-//		if(userToReturn == null) {
-//			throw new NoSuchElementException("No such user");
-//		}
 		
 		return userToReturn;
 	}
@@ -135,7 +129,6 @@ public class UserDAO implements IStringToSha1{
 			isValidName(u.getFirstName(), regex);
 			pst1.executeUpdate();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			con.rollback();
 			e.printStackTrace();
 		}finally {
@@ -153,8 +146,6 @@ public class UserDAO implements IStringToSha1{
 	}
 	
 	public void applyForOffer(long offerId, long userId) throws SQLException, NotOfferFoundException, AlreadyAppliedForThisOfferException, NotUserException {
-		System.out.println("OFFER ID " + offerId);
-		System.out.println("UserId " + userId );
 		ResultSet rs3 = isUser(userId);
 		
 		if(!rs3.next()) {
@@ -164,7 +155,6 @@ public class UserDAO implements IStringToSha1{
 		OfferDTO offer = null;
 		ResultSet rs = con.createStatement().executeQuery("select * from `jobs-bg`.offers where offer_id = "+offerId+";");
 		while(rs.next()) {
-			System.out.println("while");
 			offer = new OfferDTO(rs.getLong(1), rs.getString(2), rs.getInt(3), 
 					rs.getDate(4), rs.getLong(5), rs.getLong(6), rs.getLong(7),
 					rs.getLong(8), rs.getLong(9), rs.getLong(10));

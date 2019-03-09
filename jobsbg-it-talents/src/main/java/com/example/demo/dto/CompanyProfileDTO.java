@@ -11,6 +11,19 @@ public class CompanyProfileDTO {
 	private String name;
 	private String website;
 	private int bulstat;
+	
+	public CompanyProfileDTO(Long companyId, String name, String email, String website, int bulstat,
+			String passowrd, String phoneNumber, String pictureUrl) {
+		this.companyId = companyId;
+		this.name = name;
+		this.email = email;
+		this.website = website;
+		this.bulstat = bulstat;
+		this.password = passowrd;
+		this.phoneNumber = phoneNumber;
+		this.pictureUrl = pictureUrl;
+	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -31,17 +44,7 @@ public class CompanyProfileDTO {
 		return isDeleted;
 	}
 	
-	public CompanyProfileDTO(Long companyId, String name, String email, String website, int bulstat,
-			String passowrd, String phoneNumber, String pictureUrl) {
-		this.companyId = companyId;
-		this.name = name;
-		this.email = email;
-		this.website = website;
-		this.bulstat = bulstat;
-		this.password = passowrd;
-		this.phoneNumber = phoneNumber;
-		this.pictureUrl = pictureUrl;
-	}
+	
 	
 	public int getBulstat() {
 		return bulstat;
