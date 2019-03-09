@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.OfferDAO;
 import com.example.demo.dto.OfferDTO;
+import com.example.demo.dto.SortedOfferDTO;
 import com.example.demo.dto.UserDTO;
 
 @RestController
@@ -19,16 +20,20 @@ public class OfferController {
 	private List<OfferDTO> offerContainer = new LinkedList<>();
 	@Autowired
 	private OfferDAO offerDao;
-	//za vremenno vytreshno polzvane
 	@GetMapping("/offers")
-	public List<OfferDTO> getAllUsers(@RequestParam(name="sortBy",required = false) String sortBy,
-			@RequestParam(name="companyId", required = false) Long companyId){
+	public List<SortedOfferDTO> getAllOffers(@RequestParam(name="sortBy",required = false) String sortBy,
+			@RequestParam(name="cityId",required = false) Long cityId,
+			@RequestParam(name="jobCategoryId",required = false) Long jobCategoryId,
+			@RequestParam(name="jobTypeId",required = false) Long jobTypeId,
+			@RequestParam(name="jobLevelId",required = false) Long jobLevelId,
+			@RequestParam(name="jobLanguageId",required = false) Long jobLanguageId,
+			@RequestParam(name="keyword",required = false) String keyword,
+			@RequestParam(name="countryId",required = false) Long countryId,
+			@RequestParam(name="companyId",required = false) Long companyId){
 		try {
-		//	this.getOffersInList();
-			return offerDao.getAllOffers(sortBy,companyId);
+			return offerDao.getAllOffers(sortBy,cityId,countryId,jobCategoryId,jobTypeId,jobLevelId,jobLanguageId,keyword,companyId);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return new LinkedList<OfferDTO>();
+			return new LinkedList<SortedOfferDTO>();
 		}
 	}
 	//za vremenno vytreshno polzvane
