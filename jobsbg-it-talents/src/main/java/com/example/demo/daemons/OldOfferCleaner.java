@@ -27,7 +27,7 @@ import com.example.demo.model.Offer;
 
 @Component
 public class OldOfferCleaner implements Runnable{
-	private static final int DAEMON_THREAD_CLEANER_TIME_TO_SLEEP = 5000;
+	private static final int DAEMON_THREAD_CLEANER_TIME_TO_SLEEP = 10000;
 	private static final String SELECT_ALL_OFFERS_QUERRY = "SELECT * FROM `jobs-bg`.offers";
 	private static final int OFFERS_DAYS_LIMIT = 30;
 	private static final String DELETE_OFFER_FROM_APPLICATIONS = "delete from applications where offer_id = ";

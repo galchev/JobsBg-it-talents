@@ -49,7 +49,7 @@ public class UserController implements IRegistrationLogin{
 		try {
 			return userDao.getAllUsers();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("SQL exception in getAllUsers Method");
 			return new LinkedList<UserDTO>();
 		}
 	}
@@ -77,7 +77,17 @@ public class UserController implements IRegistrationLogin{
 		}
 	}
 	
-	
+	@GetMapping("/applications")
+	public List<ApplicationDTO> getAllAplications(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		long id = (long) session.getAttribute("userId");
+		try {
+			 return userDao.getApplications(id);
+		} catch (SQLException e) {
+			System.out.println("SQL EXCEPTION in getAllAplications Method");
+			return new LinkedList<ApplicationDTO>();
+		}
+	}
 	@PostMapping("/logout")
 	public void logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();

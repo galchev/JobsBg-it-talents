@@ -214,7 +214,15 @@ public class UserDAO implements IStringToSha1{
 		Connection con1 = jdbcTemplate.getDataSource().getConnection();
 		con1.createStatement().executeUpdate("delete from applications where application_id = "+appId+" and user_reg_id = "+userId+";");
 	}
-	
+	public List<ApplicationDTO> getApplications(long userId) throws SQLException{
+		Connection con = jdbcTemplate.getDataSource().getConnection();
+		ResultSet rs = con.createStatement().executeQuery("select * from applications where user_reg_id = "+userId+";");
+		List<ApplicationDTO> applicationsToReturn = new LinkedList<>();
+		while(rs.next()) {
+			applicationsToReturn.add(new ApplicationDTO(rs.getLong(1), rs.getDate(2), rs.getLong(3), rs.getLong(4)));
+		}
+		return applicationsToReturn;
+	}
 	public UserProfileDTO getUserProfile(long id) throws SQLException, NoSuchElementException {
 		return this.getUserById(id);
 	}
