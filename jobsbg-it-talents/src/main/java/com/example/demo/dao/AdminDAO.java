@@ -50,6 +50,7 @@ public class AdminDAO implements IAdmin{
 	}
 	
 	
+	
 	public boolean isAdmin(long id) throws SQLException {
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		
