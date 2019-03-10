@@ -191,13 +191,16 @@ public class CompanyController implements IRegistrationLogin{
 	
 	@GetMapping("/companyProfile/offers")
 	public List<OfferDTO> getCompanyOffers(HttpServletRequest request) throws SQLException, UnauthorizedException{
-
+		try {
 		HttpSession session = request.getSession();
 		long id = (long) session.getAttribute("userId");
 		if(!isLogged(session)) {
 			throw new UnauthorizedException("Not allowed");
 		}
 		return companyDao.getCompanyOffers(id);
+		}catch(NullPointerException e) {
+			throw new UnauthorizedException("Not allowed");
+		}
 	}
 	
 	

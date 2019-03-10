@@ -103,8 +103,11 @@ public class UserController implements IRegistrationLogin{
 	 * Get current logged user's applications
 	 */
 	@GetMapping("/applications")
-	public List<ApplicationDTO> getAllAplications(HttpServletRequest request){
+	public List<ApplicationDTO> getAllAplications(HttpServletRequest request) throws UnauthorizedException{
 		HttpSession session = request.getSession();
+		if(!isLogged(session)) {
+			throw new UnauthorizedException("You are not logged !");
+		}
 		long id = (long) session.getAttribute("userId");
 		try {
 			 return userDao.getApplications(id);
@@ -117,15 +120,19 @@ public class UserController implements IRegistrationLogin{
 	 * Logout
 	 */
 	@PostMapping("/logout")
-	public void logout(HttpServletRequest request) {
+	public void logout(HttpServletRequest request) throws UnauthorizedException {
+		
 		HttpSession session = request.getSession();
+		if(!isLogged(session)) {
+			throw new UnauthorizedException(" You are not logged to logout ");
+		}
 		session.invalidate();
 	}
 	/*
 	 * Delete current logged user's profile
 	 */
 	@DeleteMapping("/deleteProfile")
-	public UserProfileDTO deleteProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
+	public UserProfileDTO deleteProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, UnauthorizedException {
 		try {
 			HttpSession session = request.getSession();
 			
