@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,7 +113,8 @@ public class CompanyController implements IRegistrationLogin{
 	 * Get current logged company's profile details
 	 */
 	@GetMapping("/companyProfile")
-	public CompanyProfileDTO getCompanyProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException {
+	public CompanyProfileDTO getCompanyProfile(HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, IOException {
+		response.getWriter().println("Login Successful");	
 		try {
 			HttpSession session = request.getSession();
 			long id = (long) session.getAttribute("userId");

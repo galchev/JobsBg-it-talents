@@ -17,6 +17,7 @@ import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserProfileDTO;
 import com.example.demo.exceptions.InvalidBulstatException;
 import com.example.demo.exceptions.InvalidEmailOrPasswordException;
+import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.model.Registration;
 
@@ -46,12 +47,11 @@ public class RegistrationController {
 	 */
 	
 	@PostMapping("/registrationsUser")
-	public long register(@RequestBody UserProfileDTO user) {
+	public long register(@RequestBody UserProfileDTO user) throws InvalidNameException, InvalidEmailOrPasswordException, InvalidPhoneNumberException {
 		
 		try {
 			return this.regDao.registerUser(user);
-		} catch (Exception e) {
-			System.out.println("Exception in register user method in Registration controller");
+		} catch (SQLException e) {
 			return 0;
 		}
 		
@@ -62,12 +62,11 @@ public class RegistrationController {
 	 */
 	
 	@PostMapping("/registrationsCompany")
-	public long register(@RequestBody CompanyProfileDTO company){
+	public long register(@RequestBody CompanyProfileDTO company) throws InvalidNameException, InvalidPhoneNumberException, InvalidEmailOrPasswordException, InvalidBulstatException{
 		
 		try {
 			return this.regDao.registerCompany(company);
-		} catch (Exception e) {
-			System.out.println("Exception in register company method in Registration controller");
+		} catch (SQLException e) {
 			return 0;
 		}
 		

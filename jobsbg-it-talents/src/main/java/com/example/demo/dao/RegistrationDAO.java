@@ -51,7 +51,7 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 	}
 	
 	
-	public long registerUser(UserProfileDTO user) throws Exception {
+	public long registerUser(UserProfileDTO user) throws SQLException, InvalidNameException, InvalidEmailOrPasswordException, InvalidPhoneNumberException {
 				
 		
 		Connection con = jdbcTemplate.getDataSource().getConnection();
@@ -92,9 +92,16 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 
 			
 		}
-		catch(Exception e) {
+		catch(SQLException e) {
 			con.rollback();
-			throw e;
+		}
+		catch(InvalidEmailOrPasswordException e) {
+			con.rollback();
+			throw new InvalidEmailOrPasswordException("Email is not free");
+		}
+		catch(InvalidNameException e) {
+			con.rollback();
+			throw new InvalidNameException("Invalid name");
 		}
 		finally {
 			con.setAutoCommit(true);
@@ -103,7 +110,7 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 	}
 
 	
-	public long registerCompany(CompanyProfileDTO company) throws Exception{
+	public long registerCompany(CompanyProfileDTO company) throws SQLException, InvalidNameException, InvalidPhoneNumberException, InvalidEmailOrPasswordException, InvalidBulstatException{
 		
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
@@ -142,9 +149,21 @@ public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 
 			
 		}
-		catch(Exception e) {
+		catch(SQLException e) {
 			con.rollback();
 			throw e;
+		}
+		catch(InvalidEmailOrPasswordException e) {
+			con.rollback();
+			throw new InvalidEmailOrPasswordException("Email is not free");
+		}
+		catch(InvalidBulstatException e) {
+			con.rollback();
+			throw new InvalidBulstatException("Invalid bulstat");
+		}
+		catch(InvalidNameException e) {
+			con.rollback();
+			throw new InvalidNameException("Invalid name");
 		}
 		
 		finally {
