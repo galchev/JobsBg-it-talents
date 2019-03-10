@@ -68,9 +68,11 @@ public class CompanyController implements IRegistrationLogin{
 	}
 	/**
 	 * Edit offer by offer ID from Postman (only if you are logged as company)
+	 * 
 	 */
+	
 	@PutMapping("/companyProfile/editOffer/{offerId}")
-	public void editOffer(@PathVariable Long offerId, @RequestBody EditOfferDTO offer, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException, InvalidInputException {
+	public void editOffer(@PathVariable Long offerId, @RequestBody EditOfferDTO offer, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException, InvalidInputException{
 		try {
 			HttpSession session = request.getSession();
 			
