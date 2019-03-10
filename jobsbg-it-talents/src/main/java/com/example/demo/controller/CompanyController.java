@@ -26,6 +26,7 @@ import com.example.demo.dto.EditProfileCompanyDTO;
 import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.InvalidInputException;
 import com.example.demo.exceptions.InvalidOfferOwnerException;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.exceptions.NotOfferFoundException;
@@ -37,7 +38,7 @@ public class CompanyController implements IRegistrationLogin{
 
 	@Autowired
 	private CompanyDAO companyDao;
-	/*
+	/**
 	 * Add offer only if you are logged as company
 	 */
 	
@@ -65,11 +66,11 @@ public class CompanyController implements IRegistrationLogin{
 			return 0;
 		}
 	}
-	/*
+	/**
 	 * Edit offer by offer ID from Postman (only if you are logged as company)
 	 */
 	@PutMapping("/companyProfile/editOffer/{offerId}")
-	public void editOffer(@PathVariable Long offerId, @RequestBody EditOfferDTO offer, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException {
+	public void editOffer(@PathVariable Long offerId, @RequestBody EditOfferDTO offer, HttpServletRequest request, HttpServletResponse response) throws NoSuchElementException, NotOfferFoundException, SQLException, InvalidOfferOwnerException, InvalidInputException {
 		try {
 			HttpSession session = request.getSession();
 			
@@ -90,7 +91,7 @@ public class CompanyController implements IRegistrationLogin{
 			throw new NotOfferFoundException("Not offer with this id");
 		}
 	}
-	/*
+	/**
 	 * Get all companies in jobsBg
 	 */
 	@GetMapping("/companies")
@@ -102,14 +103,14 @@ public class CompanyController implements IRegistrationLogin{
 			return new LinkedList<>();
 		}
 	}
-	/*
+	/**
 	 * Get company by ID
 	 */
 	@GetMapping("/companies/{companyId}")
 	public CompanyProfileDTO getCompanyDetails(@PathVariable long companyId) throws SQLException, NoSuchElementException {
 			return companyDao.getCompanyById(companyId);
 	}
-	/*
+	/**
 	 * Get current logged company's profile details
 	 */
 	@GetMapping("/companyProfile")
@@ -138,7 +139,7 @@ public class CompanyController implements IRegistrationLogin{
 		}
 	}
 	
-	/*
+	/**
 	 * Editing your company profile (only if you are logged as this company)
 	 */
 	
@@ -163,7 +164,7 @@ public class CompanyController implements IRegistrationLogin{
 			return;
 		}
 	}
-	/*
+	/**
 	 * Delete offer by id (only if you are logged as a company and you have an offer with this id
 	 */
 	@DeleteMapping("/companyProfile/deleteOffer/{offerId}")

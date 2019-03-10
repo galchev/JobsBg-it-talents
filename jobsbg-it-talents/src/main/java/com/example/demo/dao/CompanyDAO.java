@@ -22,6 +22,7 @@ import com.example.demo.dto.EditProfileCompanyDTO;
 import com.example.demo.dto.EditUserProfileDTO;
 import com.example.demo.dto.OfferDTO;
 import com.example.demo.dto.UserProfileDTO;
+import com.example.demo.exceptions.InvalidInputException;
 import com.example.demo.exceptions.InvalidNameException;
 import com.example.demo.exceptions.InvalidPhoneNumberException;
 import com.example.demo.exceptions.NoSuchElementException;
@@ -172,7 +173,7 @@ public class CompanyDAO implements IStringToSha1{
 		return offer.getId();
 	}
 
-	public void editOffer(EditOfferDTO offer,long id) throws SQLException {
+	public void editOffer(EditOfferDTO offer,long id) throws SQLException, InvalidInputException {
 
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);
@@ -196,7 +197,8 @@ public class CompanyDAO implements IStringToSha1{
 			
 		} catch (Exception e) {
 			con.rollback();
-			e.printStackTrace();
+
+			throw new InvalidInputException("Invalid input");
 		}finally {
 			con.setAutoCommit(true);
 		}

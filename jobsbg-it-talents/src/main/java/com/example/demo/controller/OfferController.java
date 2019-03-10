@@ -19,7 +19,7 @@ public class OfferController {
 	
 	@Autowired
 	private OfferDAO offerDao;
-	/*
+	/**
 	 * Get offers by criterias (if user wants to enter criteria)
 	 * criterias - cityId,countryId,jobCategoryId,jobTypeId,jobLevelId,jobLanguageId,keyword,companyId
 	 * sortBy - offerTitle, salaryAsc, salaryDsc, newest, oldest

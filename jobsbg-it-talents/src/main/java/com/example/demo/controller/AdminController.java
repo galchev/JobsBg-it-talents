@@ -25,7 +25,7 @@ public class AdminController implements IRegistrationLogin{
 
 	@Autowired
 	private AdminDAO adminDao;
-	/*
+	/**
 	 * Deleting Registration by ID
 	 */
 	@DeleteMapping("/deleteRegistration/{id}")
@@ -45,7 +45,7 @@ public class AdminController implements IRegistrationLogin{
 			
 			adminDao.deleteProfile(id);	
 	}
-	/*
+	/**
 	 * Deleting Offer by ID
 	 */
 	@DeleteMapping("/deleteOffer/{id}")
