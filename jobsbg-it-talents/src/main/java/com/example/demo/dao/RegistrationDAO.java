@@ -28,8 +28,6 @@ import com.example.demo.model.User;
 @Component
 public class RegistrationDAO implements IInputStringValidation,IStringToSha1{
 	
-
-	
 	
 	private static final String INSERT_INTO_REGISTRATIONS_QUERY= "insert into registrations(email, password, phone_number, picture_url) values(?,?,?,?)";
 	private static final String GET_ALL_REGISTRATIONS = "select * from registrations";

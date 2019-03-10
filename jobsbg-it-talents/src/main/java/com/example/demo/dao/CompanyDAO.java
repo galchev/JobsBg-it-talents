@@ -173,7 +173,7 @@ public class CompanyDAO implements IStringToSha1{
 		return offer.getId();
 	}
 
-	public void editOffer(EditOfferDTO offer,long id) throws SQLException, InvalidInputException {
+	public void editOffer(EditOfferDTO offer,long id) throws SQLException, InvalidInputException{
 
 		Connection con = jdbcTemplate.getDataSource().getConnection();
 		con.setAutoCommit(false);

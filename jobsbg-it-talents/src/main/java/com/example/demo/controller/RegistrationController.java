@@ -73,5 +73,9 @@ public class RegistrationController {
 		
 	}
 
+	public RegistrationDAO getRegDao() {
+		return regDao;
+	}
+
 	
 }
