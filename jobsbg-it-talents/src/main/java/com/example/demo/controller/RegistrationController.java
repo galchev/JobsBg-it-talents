@@ -28,7 +28,7 @@ public class RegistrationController {
 	@Autowired
 	private RegistrationDAO regDao;
 	
-	/*
+	/**
 	 * Get all registrations 
 	 */
 	@GetMapping("/registrations")
@@ -41,7 +41,7 @@ public class RegistrationController {
 		}
 	}
 	
-	/*
+	/**
 	 * Register as User 
 	 */
 	
@@ -57,7 +57,7 @@ public class RegistrationController {
 		
 	}
 	
-	/*
+	/**
 	 * Register as a Company
 	 */
 	
